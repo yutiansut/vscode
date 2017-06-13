@@ -7,14 +7,15 @@
 import { TPromise } from 'vs/base/common/winjs.base';
 import URI from 'vs/base/common/uri';
 import { first } from 'vs/base/common/async';
+import Event, { Emitter } from 'vs/base/common/event';
 import { IInstantiationService } from 'vs/platform/instantiation/common/instantiation';
 import { IModel } from 'vs/editor/common/editorCommon';
-import { IDisposable, toDisposable, IReference, ReferenceCollection, ImmortalReference } from 'vs/base/common/lifecycle';
+import { IDisposable, toDisposable, IReference, ReferenceCollection, ImmortalReference, dispose } from 'vs/base/common/lifecycle';
 import { IModelService } from 'vs/editor/common/services/modelService';
 import { ResourceEditorModel } from 'vs/workbench/common/editor/resourceEditorModel';
 import { ITextFileService } from 'vs/workbench/services/textfile/common/textfiles';
 import network = require('vs/base/common/network');
-import { ITextModelService, ITextModelContentProvider, ITextEditorModel } from 'vs/editor/common/services/resolverService';
+import { ITextModelService, ITextModelContentProvider, ITextEditorModel, ITextModelSaveOptions, ITextModelSaver, ITextModelStateChangeEvent } from 'vs/editor/common/services/resolverService';
 import { IUntitledEditorService, UNTITLED_SCHEMA } from 'vs/workbench/services/untitled/common/untitledEditorService';
 import { TextFileEditorModel } from 'vs/workbench/services/textfile/common/textFileEditorModel';
 
@@ -92,11 +93,49 @@ class ResourceModelCollection extends ReferenceCollection<TPromise<ITextEditorMo
 	}
 }
 
+class ModelChangeEventEmitter {
+
+	private readonly _toDispose: IDisposable[] = [];
+	private readonly _modelListener = new Map<IModel, IDisposable>();
+	private readonly _onDidChangeContent = new Emitter<IModel>();
+
+	readonly onDidChangeContent: Event<IModel> = this._onDidChangeContent.event;
+
+	constructor(
+		private readonly _modelService: IModelService
+	) {
+		this._modelService.onModelAdded(this._onModelAdded, this, this._toDispose);
+		this._modelService.onModelRemoved(this._onModelRemoved, this, this._toDispose);
+	}
+
+	dispose(): void {
+		dispose(this._toDispose);
+		this._modelListener.forEach(value => value.dispose());
+		this._onDidChangeContent.dispose();
+	}
+
+	private _onModelAdded(m: IModel): void {
+		const subscription = m.onDidChangeContent(e => this._onDidChangeContent.fire(m));
+		this._modelListener.set(m, subscription);
+	}
+
+	private _onModelRemoved(m: IModel): void {
+		dispose(this._modelListener.get(m));
+		this._modelListener.delete(m);
+	}
+}
+
 export class TextModelResolverService implements ITextModelService {
 
 	_serviceBrand: any;
 
-	private resourceModelCollection: ResourceModelCollection;
+	private readonly _resourceModelCollection: ResourceModelCollection;
+	private readonly _onDidChangeModelContent: ModelChangeEventEmitter;
+
+	private readonly _modelSaver = new Map<string, ITextModelSaver>();
+	private readonly _onDidChangeState = new Emitter<ITextModelStateChangeEvent>();
+
+	readonly onDidChangeState: Event<ITextModelStateChangeEvent> = this._onDidChangeState.event;
 
 	constructor(
 		@ITextFileService private textFileService: ITextFileService,
@@ -104,14 +143,21 @@ export class TextModelResolverService implements ITextModelService {
 		@IInstantiationService private instantiationService: IInstantiationService,
 		@IModelService private modelService: IModelService
 	) {
-		this.resourceModelCollection = instantiationService.createInstance(ResourceModelCollection);
+		this._resourceModelCollection = instantiationService.createInstance(ResourceModelCollection);
+		this._onDidChangeModelContent = new ModelChangeEventEmitter(modelService);
+
+		this._onDidChangeModelContent.onDidChangeContent(model => {
+			if (this._modelSaver.has(model.uri.scheme)) {
+				this._onDidChangeState.fire({ type: 'dirty', resource: model.uri });
+			}
+		});
 	}
 
-	public createModelReference(resource: URI): TPromise<IReference<ITextEditorModel>> {
-		return this._createModelReference(resource);
+	dispose(): void {
+		this._onDidChangeModelContent.dispose();
 	}
 
-	private _createModelReference(resource: URI): TPromise<IReference<ITextEditorModel>> {
+	createModelReference(resource: URI): TPromise<IReference<ITextEditorModel>> {
 
 		// Untitled Schema: go through cached input
 		// TODO ImmortalReference is a hack
@@ -131,7 +177,7 @@ export class TextModelResolverService implements ITextModelService {
 			return TPromise.as(new ImmortalReference(this.instantiationService.createInstance(ResourceEditorModel, resource)));
 		}
 
-		const ref = this.resourceModelCollection.acquire(resource.toString());
+		const ref = this._resourceModelCollection.acquire(resource.toString());
 
 		return ref.object.then(
 			model => ({ object: model, dispose: () => ref.dispose() }),
@@ -143,7 +189,39 @@ export class TextModelResolverService implements ITextModelService {
 		);
 	}
 
-	public registerTextModelContentProvider(scheme: string, provider: ITextModelContentProvider): IDisposable {
-		return this.resourceModelCollection.registerTextModelContentProvider(scheme, provider);
+	registerTextModelContentProvider(scheme: string, provider: ITextModelContentProvider): IDisposable {
+		return this._resourceModelCollection.registerTextModelContentProvider(scheme, provider);
+	}
+
+	registerTextModelSaver(scheme: string, saver: ITextModelSaver): IDisposable {
+		if (this._modelSaver.has(scheme)) {
+			throw new Error(`there can only be one saver for the scheme '${scheme}'`);
+		}
+		this._modelSaver.set(scheme, saver);
+		return {
+			dispose: () => {
+				this._modelSaver.delete(scheme);
+			}
+		};
+	}
+
+	save(resource: URI, options: ITextModelSaveOptions): TPromise<void> {
+		const model = this.modelService.getModel(resource);
+		if (!model) {
+			return TPromise.wrapError<void>('MISSING_MODEL');
+		}
+		const saver = this._modelSaver.get(resource.scheme);
+		if (!saver) {
+			return TPromise.wrapError<void>('MISSING_SAVER');
+		}
+
+		this._onDidChangeState.fire({ type: 'saving', resource });
+		return saver.saveTextContent(model, options).then(() => {
+			this._onDidChangeState.fire({ type: 'saved', resource });
+		});
+	}
+
+	supportsSave(resource: URI): boolean {
+		return this._modelSaver.has(resource.scheme);
 	}
 }

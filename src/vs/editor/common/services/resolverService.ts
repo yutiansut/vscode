@@ -36,6 +36,19 @@ export interface ITextModelContentProvider {
 	provideTextContent(resource: URI): TPromise<IModel>;
 }
 
+export interface ITextModelSaveOptions {
+	encoding?: string;
+}
+
+export interface ITextModelSaver {
+	saveTextContent(model: IModel, options: ITextModelSaveOptions): TPromise<void>;
+}
+
+export interface ITextModelStateChangeEvent {
+	type: 'dirty' | 'reverted' | 'saving' | 'saved';
+	resource: URI;
+}
+
 export interface ITextEditorModel extends IEditorModel {
 
 	/**
