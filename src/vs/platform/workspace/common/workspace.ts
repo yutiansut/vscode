@@ -28,6 +28,17 @@ export interface IWorkspaceContextService {
 	getWorkspace(): IWorkspace;
 
 	/**
+	 * Provides access to the workspace object the platform is running with. This may be null if the workbench was opened
+	 * without workspace (empty);
+	 */
+	getWorkspace2(): IWorkspace2;
+
+	/**
+	 * An event which fires on workspace roots change.
+	 */
+	onDidChangeWorkspaceRoots: Event<URI[]>;
+
+	/**
 	 * Returns iff the provided resource is inside the workspace or not.
 	 */
 	isInsideWorkspace(resource: URI): boolean;
@@ -44,11 +55,6 @@ export interface IWorkspaceContextService {
 	 */
 	toResource: (workspaceRelativePath: string) => URI;
 
-	/**
-	 * TODO@Ben multiroot
-	 */
-	getFolders(): URI[];
-	onDidChangeFolders: Event<URI[]>;
 }
 
 export interface IWorkspace {
@@ -60,29 +66,37 @@ export interface IWorkspace {
 	resource: URI;
 
 	/**
-	 * the unique identifier of the workspace. if the workspace is deleted and recreated
-	 * the identifier also changes. this makes the uid more unique compared to the id which
-	 * is just derived from the workspace name.
-	 */
-	uid?: number;
-
-	/**
 	 * the name of the workspace
 	 */
 	name?: string;
 }
 
+export interface IWorkspace2 {
+
+	/**
+	 * the unique identifier of the workspace.
+	 */
+	readonly id: string;
+
+	/**
+	 * the name of the workspace.
+	 */
+	readonly name: string;
+
+	/**
+	 * Mutliple roots in this workspace. First entry is master and never changes.
+	 */
+	readonly roots: URI[];
+
+}
+
 export class Workspace implements IWorkspace {
 
-	constructor(private _resource: URI, private _uid?: number, private _name?: string) {
+	constructor(private _resource: URI, private _name?: string) {
 	}
 
 	public get resource(): URI {
 		return this._resource;
-	}
-
-	public get uid(): number {
-		return this._uid;
 	}
 
 	public get name(): string {
@@ -105,15 +119,15 @@ export class Workspace implements IWorkspace {
 		return null;
 	}
 
-	public toResource(workspaceRelativePath: string): URI {
+	public toResource(workspaceRelativePath: string, root?: URI): URI {
 		if (typeof workspaceRelativePath === 'string') {
-			return URI.file(paths.join(this._resource.fsPath, workspaceRelativePath));
+			return URI.file(paths.join(root ? root.fsPath : this._resource.fsPath, workspaceRelativePath));
 		}
 
 		return null;
 	}
 
 	public toJSON() {
-		return { resource: this._resource, uid: this._uid, name: this._name };
+		return { resource: this._resource, name: this._name };
 	}
 }

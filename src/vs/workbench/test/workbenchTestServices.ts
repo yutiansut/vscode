@@ -27,7 +27,7 @@ import { ITextModelService } from 'vs/editor/common/services/resolverService';
 import { IEditorInput, IEditorOptions, Position, Direction, IEditor, IResourceInput } from 'vs/platform/editor/common/editor';
 import { IUntitledEditorService, UntitledEditorService } from 'vs/workbench/services/untitled/common/untitledEditorService';
 import { IMessageService, IConfirmation } from 'vs/platform/message/common/message';
-import { IWorkspace, IWorkspaceContextService } from 'vs/platform/workspace/common/workspace';
+import { IWorkspace, IWorkspaceContextService, IWorkspace2 } from 'vs/platform/workspace/common/workspace';
 import { ILifecycleService, ShutdownEvent, ShutdownReason, StartupKind, LifecyclePhase } from 'vs/platform/lifecycle/common/lifecycle';
 import { EditorStacksModel } from 'vs/workbench/common/editor/editorStacksModel';
 import { ServiceCollection } from 'vs/platform/instantiation/common/serviceCollection';
@@ -53,6 +53,7 @@ import { IEnvironmentService } from 'vs/platform/environment/common/environment'
 import { IThemeService, ITheme, DARK } from 'vs/platform/theme/common/themeService';
 import { Color } from 'vs/base/common/color';
 import { isLinux } from 'vs/base/common/platform';
+import { generateUuid } from "vs/base/common/uuid";
 
 export function createFileInput(instantiationService: IInstantiationService, resource: URI): FileEditorInput {
 	return instantiationService.createInstance(FileEditorInput, resource, void 0);
@@ -64,18 +65,20 @@ export class TestContextService implements IWorkspaceContextService {
 	public _serviceBrand: any;
 
 	private workspace: any;
+	private id: string;
 	private options: any;
 
-	private _onDidChangeFolders: Emitter<URI[]>;
+	private _onDidChangeWorkspaceRoots: Emitter<URI[]>;
 
 	constructor(workspace: any = TestWorkspace, options: any = null) {
 		this.workspace = workspace;
+		this.id = generateUuid();
 		this.options = options || Object.create(null);
-		this._onDidChangeFolders = new Emitter<URI[]>();
+		this._onDidChangeWorkspaceRoots = new Emitter<URI[]>();
 	}
 
-	public get onDidChangeFolders(): Event<URI[]> {
-		return this._onDidChangeFolders.event;
+	public get onDidChangeWorkspaceRoots(): Event<URI[]> {
+		return this._onDidChangeWorkspaceRoots.event;
 	}
 
 	public getFolders(): URI[] {
@@ -88,6 +91,10 @@ export class TestContextService implements IWorkspaceContextService {
 
 	public getWorkspace(): IWorkspace {
 		return this.workspace;
+	}
+
+	public getWorkspace2(): IWorkspace2 {
+		return this.workspace ? { id: this.id, roots: [this.workspace.resource], name: this.workspace.resource.fsPath } : void 0;
 	}
 
 	public setWorkspace(workspace: any): void {
@@ -518,7 +525,7 @@ export class TestEditorService implements IWorkbenchEditorService {
 		return TPromise.as([]);
 	}
 
-	public closeEditors(position: Position, except?: IEditorInput, direction?: Direction): TPromise<void> {
+	public closeEditors(position: Position, filter?: { except?: IEditorInput, direction?: Direction, unmodifiedOnly?: boolean }): TPromise<void> {
 		return TPromise.as(null);
 	}
 

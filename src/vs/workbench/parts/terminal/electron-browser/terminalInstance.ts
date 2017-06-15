@@ -342,7 +342,17 @@ export class TerminalInstance implements ITerminalInstance {
 	}
 
 	public selectAll(): void {
+		// Focus here to ensure the terminal context key is set
+		this._xterm.focus();
 		this._xterm.selectAll();
+	}
+
+	public findNext(term: string): boolean {
+		return this._xterm.findNext(term);
+	}
+
+	public findPrevious(term: string): boolean {
+		return this._xterm.findPrevious(term);
 	}
 
 	public dispose(): void {
@@ -794,6 +804,7 @@ export class TerminalInstance implements ITerminalInstance {
 
 	public setTitle(title: string): void {
 		const didTitleChange = title !== this._title;
+		this._title = title;
 		if (didTitleChange) {
 			this._onTitleChanged.fire(title);
 		}

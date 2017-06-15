@@ -37,13 +37,13 @@ export class MainThreadWorkspace extends MainThreadWorkspaceShape {
 	) {
 		super();
 		this._proxy = threadService.get(ExtHostContext.ExtHostWorkspace);
-		this._contextService.onDidChangeFolders(this._onDidChangeWorkspace, this, this._toDispose);
+		this._contextService.onDidChangeWorkspaceRoots(this._onDidChangeWorkspace, this, this._toDispose);
 	}
 
 	// --- workspace ---
 
-	private _onDidChangeWorkspace(folders: URI[]): void {
-		this._proxy.$acceptWorkspaceData(folders);
+	private _onDidChangeWorkspace(): void {
+		this._proxy.$acceptWorkspaceData(this._contextService.getWorkspace2());
 	}
 
 	// --- search ---

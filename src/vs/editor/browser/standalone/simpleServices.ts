@@ -17,7 +17,7 @@ import { KeybindingResolver } from 'vs/platform/keybinding/common/keybindingReso
 import { IKeybindingEvent, KeybindingSource, IKeyboardEvent } from 'vs/platform/keybinding/common/keybinding';
 import { ContextKeyExpr, IContextKeyService } from 'vs/platform/contextkey/common/contextkey';
 import { IConfirmation, IMessageService } from 'vs/platform/message/common/message';
-import { IWorkspaceContextService, Workspace, IWorkspace } from 'vs/platform/workspace/common/workspace';
+import { IWorkspaceContextService, Workspace, IWorkspace, IWorkspace2 } from 'vs/platform/workspace/common/workspace';
 import * as editorCommon from 'vs/editor/common/editorCommon';
 import { ICodeEditor, IDiffEditor } from 'vs/editor/browser/editorBrowser';
 import { Selection } from 'vs/editor/common/core/selection';
@@ -37,6 +37,7 @@ import { ResolvedKeybinding, Keybinding, createKeybinding, SimpleKeybinding } fr
 import { ResolvedKeybindingItem } from 'vs/platform/keybinding/common/resolvedKeybindingItem';
 import { OS } from 'vs/base/common/platform';
 import { IRange } from 'vs/editor/common/core/range';
+import { generateUuid } from "vs/base/common/uuid";
 
 export class SimpleEditor implements IEditor {
 
@@ -495,13 +496,15 @@ export class SimpleWorkspaceContextService implements IWorkspaceContextService {
 
 	public _serviceBrand: any;
 
-	private readonly _onDidChangeFolders: Emitter<URI[]> = new Emitter<URI[]>();
-	public readonly onDidChangeFolders: Event<URI[]> = this._onDidChangeFolders.event;
+	private readonly _onDidChangeWorkspaceRoots: Emitter<URI[]> = new Emitter<URI[]>();
+	public readonly onDidChangeWorkspaceRoots: Event<URI[]> = this._onDidChangeWorkspaceRoots.event;
 
 	private readonly folders: URI[];
+	private readonly id: string;
 
 	constructor(private workspace?: Workspace) {
 		this.folders = workspace ? [workspace.resource] : [];
+		this.id = generateUuid();
 	}
 
 	public getFolders(): URI[] {
@@ -510,6 +513,10 @@ export class SimpleWorkspaceContextService implements IWorkspaceContextService {
 
 	public getWorkspace(): IWorkspace {
 		return this.workspace;
+	}
+
+	public getWorkspace2(): IWorkspace2 {
+		return this.workspace ? { id: `${this.id}`, roots: [this.workspace.resource], name: this.workspace.resource.fsPath } : void 0;
 	}
 
 	public hasWorkspace(): boolean {
