@@ -48,6 +48,7 @@ import { IWindowsService, IWindowService } from 'vs/platform/windows/common/wind
 import { withFocussedFilesExplorer, revealInOSCommand, revealInExplorerCommand, copyPathCommand } from 'vs/workbench/parts/files/browser/fileCommands';
 import { ITelemetryData } from 'vs/platform/telemetry/common/telemetry';
 import { IEnvironmentService } from 'vs/platform/environment/common/environment';
+import { ITextModelService } from "vs/editor/common/services/resolverService";
 
 export interface IEditableData {
 	action: IAction;
@@ -1330,7 +1331,8 @@ export abstract class BaseSaveFileAction extends BaseActionWithErrorReporting {
 		@ITextFileService private textFileService: ITextFileService,
 		@IEditorGroupService private editorGroupService: IEditorGroupService,
 		@IUntitledEditorService private untitledEditorService: IUntitledEditorService,
-		@IMessageService messageService: IMessageService
+		@IMessageService messageService: IMessageService,
+		@ITextModelService private textModelService: ITextModelService
 	) {
 		super(id, label, messageService);
 
@@ -1348,13 +1350,18 @@ export abstract class BaseSaveFileAction extends BaseActionWithErrorReporting {
 		if (this.resource) {
 			source = this.resource;
 		} else {
-			source = toResource(this.editorService.getActiveEditorInput(), { supportSideBySide: true, filter: ['file', 'untitled'] });
+			source = toResource(this.editorService.getActiveEditorInput(), { supportSideBySide: true });
 		}
 
 		if (source) {
 
+			// TODO@Ben temporary
+			if (source.scheme !== 'file' && source.scheme !== 'untitled') {
+				return this.textModelService.save(source).then(() => true, () => false);
+			}
+
 			// Save As (or Save untitled with associated path)
-			if (this.isSaveAs() || source.scheme === 'untitled') {
+			else if (this.isSaveAs() || source.scheme === 'untitled') {
 				let encodingOfSource: string;
 				if (source.scheme === 'untitled') {
 					encodingOfSource = this.untitledEditorService.getEncoding(source);
