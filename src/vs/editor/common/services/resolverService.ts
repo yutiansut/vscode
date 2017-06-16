@@ -10,11 +10,17 @@ import { createDecorator } from 'vs/platform/instantiation/common/instantiation'
 import { IModel } from 'vs/editor/common/editorCommon';
 import { IEditorModel } from 'vs/platform/editor/common/editor';
 import { IDisposable, IReference } from 'vs/base/common/lifecycle';
+import Event from 'vs/base/common/event';
 
 export const ITextModelService = createDecorator<ITextModelService>('textModelService');
 
 export interface ITextModelService {
 	_serviceBrand: any;
+
+	/**
+	 * Emitted when the state of one of the resources changed.
+	 */
+	onDidChangeState: Event<ITextModelStateChangeEvent>;
 
 	/**
 	 * Provided a resource URI, it will return a model reference
@@ -31,6 +37,17 @@ export interface ITextModelService {
 	 * Registers a specific `scheme` saver.
 	 */
 	registerTextModelSaver(scheme: string, saver: ITextModelSaver): IDisposable;
+
+	/**
+	 * Saves the provided resource. This will only work if a ITextModelSaver is registered for the
+	 * scheme of the resource.
+	 */
+	save(resource: URI, options?: ITextModelSaveOptions): TPromise<void>;
+
+	/**
+	 * Finds out if a resource supports saving via the ITextModelSaver helper.
+	 */
+	supportsSave(resource: URI): boolean;
 }
 
 export interface ITextModelContentProvider {
@@ -46,7 +63,7 @@ export interface ITextModelSaveOptions {
 }
 
 export interface ITextModelSaver {
-	saveTextContent(resource: URI, model: IModel, options: ITextModelSaveOptions): TPromise<void>;
+	saveTextContent(resource: URI, model: IModel, options?: ITextModelSaveOptions): TPromise<void>;
 }
 
 export interface ITextModelStateChangeEvent {

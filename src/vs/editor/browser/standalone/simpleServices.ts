@@ -25,7 +25,7 @@ import Event, { Emitter } from 'vs/base/common/event';
 import { getDefaultValues as getDefaultConfiguration } from 'vs/platform/configuration/common/model';
 import { IInstantiationService } from 'vs/platform/instantiation/common/instantiation';
 import { IProgressService, IProgressRunner } from 'vs/platform/progress/common/progress';
-import { ITextModelService, ITextModelContentProvider, ITextEditorModel, ITextModelSaver } from 'vs/editor/common/services/resolverService';
+import { ITextModelService, ITextModelContentProvider, ITextEditorModel, ITextModelSaver, ITextModelSaveOptions, ITextModelStateChangeEvent } from 'vs/editor/common/services/resolverService';
 import { IDisposable, IReference, ImmortalReference, combinedDisposable } from 'vs/base/common/lifecycle';
 import * as dom from 'vs/base/browser/dom';
 import { StandardKeyboardEvent } from 'vs/base/browser/keyboardEvent';
@@ -180,6 +180,10 @@ export class SimpleEditorModelResolverService implements ITextModelService {
 
 	private editor: SimpleEditor;
 
+	private readonly _onDidChangeState = new Emitter<ITextModelStateChangeEvent>();
+
+	readonly onDidChangeState: Event<ITextModelStateChangeEvent> = this._onDidChangeState.event;
+
 	public setEditor(editor: editorCommon.IEditor): void {
 		this.editor = new SimpleEditor(editor);
 	}
@@ -215,7 +219,17 @@ export class SimpleEditorModelResolverService implements ITextModelService {
 	}
 
 	public registerTextModelSaver(scheme: string, saver: ITextModelSaver): IDisposable {
-		throw new Error('Method not implemented.');
+		return {
+			dispose: function () { /* no op */ }
+		};
+	}
+
+	public save(resource: URI, options: ITextModelSaveOptions): TPromise<void> {
+		return TPromise.as(null);
+	}
+
+	public supportsSave(resource: URI): boolean {
+		return false;
 	}
 }
 

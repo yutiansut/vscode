@@ -23,6 +23,7 @@ import { IEditorGroupService } from 'vs/workbench/services/group/common/groupSer
 import { IModeService } from 'vs/editor/common/services/modeService';
 import { ITextFileService } from 'vs/workbench/services/textfile/common/textfiles';
 import { once } from "vs/base/common/event";
+import { ITextModelService } from "vs/editor/common/services/resolverService";
 
 /**
  * An editor implementation that is capable of showing the contents of resource inputs. Uses
@@ -40,7 +41,8 @@ export class TextResourceEditor extends BaseTextEditor {
 		@IThemeService themeService: IThemeService,
 		@IEditorGroupService editorGroupService: IEditorGroupService,
 		@IModeService modeService: IModeService,
-		@ITextFileService textFileService: ITextFileService
+		@ITextFileService textFileService: ITextFileService,
+		@ITextModelService private textModelResolverService: ITextModelService
 	) {
 		super(TextResourceEditor.ID, telemetryService, instantiationService, storageService, configurationService, themeService, modeService, textFileService, editorGroupService);
 	}
@@ -119,19 +121,25 @@ export class TextResourceEditor extends BaseTextEditor {
 
 	protected getConfigurationOverrides(): IEditorOptions {
 		const options = super.getConfigurationOverrides();
-
-		options.readOnly = !(this.input instanceof UntitledEditorInput); // all resource editors are readonly except for the untitled one;
+		options.readOnly = this.isReadonly();
 
 		return options;
 	}
 
+	private isReadonly(): boolean {
+		if (this.input instanceof ResourceEditorInput) {
+			return !this.textModelResolverService.supportsSave(this.input.getResource());
+		}
+
+		return !(this.input instanceof UntitledEditorInput);
+	}
+
 	protected getAriaLabel(): string {
 		const input = this.input;
-		const isReadonly = !(this.input instanceof UntitledEditorInput);
 
 		let ariaLabel: string;
 		const inputName = input && input.getName();
-		if (isReadonly) {
+		if (this.isReadonly()) {
 			ariaLabel = inputName ? nls.localize('readonlyEditorWithInputAriaLabel', "{0}. Readonly text editor.", inputName) : nls.localize('readonlyEditorAriaLabel', "Readonly text editor.");
 		} else {
 			ariaLabel = inputName ? nls.localize('untitledFileEditorWithInputAriaLabel', "{0}. Untitled file text editor.", inputName) : nls.localize('untitledFileEditorAriaLabel', "Untitled file text editor.");

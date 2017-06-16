@@ -205,7 +205,7 @@ export class TextModelResolverService implements ITextModelService {
 		};
 	}
 
-	save(resource: URI, options: ITextModelSaveOptions): TPromise<void> {
+	save(resource: URI, options?: ITextModelSaveOptions): TPromise<void> {
 		const model = this.modelService.getModel(resource);
 		if (!model) {
 			return TPromise.wrapError<void>('MISSING_MODEL');

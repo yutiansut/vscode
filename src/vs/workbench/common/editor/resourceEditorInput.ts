@@ -5,12 +5,17 @@
 'use strict';
 
 import { TPromise } from 'vs/base/common/winjs.base';
-import { EditorInput, ITextEditorModel } from 'vs/workbench/common/editor';
+import { EditorInput, ITextEditorModel, ConfirmResult } from 'vs/workbench/common/editor';
 import URI from 'vs/base/common/uri';
-import { IReference } from 'vs/base/common/lifecycle';
+import { IReference, IDisposable, dispose } from 'vs/base/common/lifecycle';
 import { telemetryURIDescriptor } from 'vs/platform/telemetry/common/telemetryUtils';
-import { ITextModelService } from 'vs/editor/common/services/resolverService';
+import { ITextModelService, ITextModelStateChangeEvent } from 'vs/editor/common/services/resolverService';
 import { ResourceEditorModel } from 'vs/workbench/common/editor/resourceEditorModel';
+import { IMessageService } from "vs/platform/message/common/message";
+import { IEnvironmentService } from "vs/platform/environment/common/environment";
+import { localize } from "vs/nls";
+import { basename } from "vs/base/common/paths";
+import { isWindows, isLinux } from "vs/base/common/platform";
 
 /**
  * A read-only text editor input whos contents are made of the provided resource that points to an existing
@@ -24,18 +29,75 @@ export class ResourceEditorInput extends EditorInput {
 	private resource: URI;
 	private name: string;
 	private description: string;
+	private toUnbind: IDisposable[];
+	private dirty: boolean;
 
 	constructor(
 		name: string,
 		description: string,
 		resource: URI,
-		@ITextModelService private textModelResolverService: ITextModelService
+		@ITextModelService private textModelResolverService: ITextModelService,
+		@IEnvironmentService private environmentService: IEnvironmentService,
+		@IMessageService private messageService: IMessageService
 	) {
 		super();
 
 		this.name = name;
 		this.description = description;
 		this.resource = resource;
+		this.toUnbind = [];
+
+		this.registerListeners();
+	}
+
+	private registerListeners(): void {
+
+		// Model changes
+		this.toUnbind.push(this.textModelResolverService.onDidChangeState(e => this.onDirtyStateChange(e)));
+	}
+
+	private onDirtyStateChange(e: ITextModelStateChangeEvent): void {
+		if (e.resource.toString() === this.resource.toString()) {
+			this._onDidChangeDirty.fire();
+
+			this.dirty = (e.type === 'dirty');
+		}
+	}
+
+	public isDirty(): boolean {
+		return this.dirty;
+	}
+
+	public confirmSave(): ConfirmResult {
+		const save = this.mnemonicLabel(localize({ key: 'save', comment: ['&& denotes a mnemonic'] }, "&&Save"));
+		const dontSave = this.mnemonicLabel(localize({ key: 'dontSave', comment: ['&& denotes a mnemonic'] }, "Do&&n't Save"));
+
+		const result = this.messageService.confirm({
+			title: this.environmentService.appNameLong,
+			message: localize('saveChangesMessage', "Do you want to save the changes you made to {0}?", basename(this.resource.fsPath)),
+			type: 'warning',
+			detail: localize('saveChangesDetail', "Your changes will be lost if you don't save them."),
+			primaryButton: isLinux ? dontSave : save,
+			secondaryButton: isLinux ? save : dontSave
+		});
+
+		return result ? ConfirmResult.SAVE : ConfirmResult.DONT_SAVE;
+	}
+
+	private mnemonicLabel(label: string): string {
+		if (!isWindows) {
+			return label.replace(/\(&&\w\)|&&/g, ''); // no mnemonic support on mac/linux
+		}
+
+		return label.replace(/&&/g, '&');
+	}
+
+	public save(): TPromise<boolean> {
+		return this.textModelResolverService.save(this.resource).then(() => true, () => false);
+	}
+
+	public revert(): TPromise<boolean> {
+		return TPromise.wrapError('Unsupported: ResourceEditorInput.revert()'); // TODO@Ben implement
 	}
 
 	public getResource(): URI {
@@ -109,10 +171,15 @@ export class ResourceEditorInput extends EditorInput {
 	}
 
 	public dispose(): void {
+
+		// Model reference
 		if (this.modelReference) {
 			this.modelReference.done(ref => ref.dispose());
 			this.modelReference = null;
 		}
+
+		// Listeners
+		this.toUnbind = dispose(this.toUnbind);
 
 		super.dispose();
 	}
