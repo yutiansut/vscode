@@ -25,6 +25,7 @@ import { IThemeService } from 'vs/platform/theme/common/themeService';
 import { IEditorGroupService } from 'vs/workbench/services/group/common/groupService';
 import { IModeService } from 'vs/editor/common/services/modeService';
 import { ITextFileService } from 'vs/workbench/services/textfile/common/textfiles';
+import { ITextModelService } from "vs/editor/common/services/resolverService";
 
 export class OutputPanel extends TextResourceEditor {
 	private toDispose: IDisposable[];
@@ -41,9 +42,10 @@ export class OutputPanel extends TextResourceEditor {
 		@IContextKeyService private contextKeyService: IContextKeyService,
 		@IEditorGroupService editorGroupService: IEditorGroupService,
 		@IModeService modeService: IModeService,
-		@ITextFileService textFileService: ITextFileService
+		@ITextFileService textFileService: ITextFileService,
+		@ITextModelService textModelResolverService: ITextModelService
 	) {
-		super(telemetryService, instantiationService, storageService, configurationService, themeService, editorGroupService, modeService, textFileService);
+		super(telemetryService, instantiationService, storageService, configurationService, themeService, editorGroupService, modeService, textFileService, textModelResolverService);
 
 		this.scopedInstantiationService = instantiationService;
 		this.toDispose = [];

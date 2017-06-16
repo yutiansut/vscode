@@ -17,6 +17,8 @@ import { NullTelemetryService } from 'vs/platform/telemetry/common/telemetryUtil
 import { PLAINTEXT_MODE_ID } from 'vs/editor/common/modes/modesRegistry';
 import { workbenchInstantiationService, TestThemeService } from 'vs/workbench/test/workbenchTestServices';
 import { ResourceEditorInput } from 'vs/workbench/common/editor/resourceEditorInput';
+import { ITextModelService } from "vs/editor/common/services/resolverService";
+import { TextModelResolverService } from "vs/workbench/services/textmodelResolver/common/textModelResolverService";
 
 const NullThemeService = new TestThemeService();
 
@@ -163,6 +165,7 @@ suite('Workbench BaseEditor', () => {
 		EditorRegistry.registerEditor(d1, new SyncDescriptor(MyResourceInput));
 
 		let inst = new TestInstantiationService();
+		inst.stub(ITextModelService, workbenchInstantiationService().createInstance(TextModelResolverService));
 
 		inst.createInstance(EditorRegistry.getEditor(inst.createInstance(MyResourceInput, 'fake', '', '', PLAINTEXT_MODE_ID, false)), 'id').then(editor => {
 			assert.strictEqual(editor.getId(), 'myEditor');
@@ -184,6 +187,7 @@ suite('Workbench BaseEditor', () => {
 		EditorRegistry.registerEditor(d1, new SyncDescriptor(ResourceEditorInput));
 
 		let inst = new TestInstantiationService();
+		inst.stub(ITextModelService, workbenchInstantiationService().createInstance(TextModelResolverService));
 
 		inst.createInstance(EditorRegistry.getEditor(inst.createInstance(MyResourceInput, 'fake', '', '', PLAINTEXT_MODE_ID, false)), 'id').then(editor => {
 			assert.strictEqual('myOtherEditor', editor.getId());
