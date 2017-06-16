@@ -216,7 +216,7 @@ export class TextModelResolverService implements ITextModelService {
 		}
 
 		this._onDidChangeState.fire({ type: 'saving', resource });
-		return saver.saveTextContent(model, options).then(() => {
+		return saver.saveTextContent(resource, model, options).then(() => {
 			this._onDidChangeState.fire({ type: 'saved', resource });
 		});
 	}

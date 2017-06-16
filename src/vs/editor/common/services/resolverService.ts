@@ -26,6 +26,11 @@ export interface ITextModelService {
 	 * Registers a specific `scheme` content provider.
 	 */
 	registerTextModelContentProvider(scheme: string, provider: ITextModelContentProvider): IDisposable;
+
+	/**
+	 * Registers a specific `scheme` saver.
+	 */
+	registerTextModelSaver(scheme: string, saver: ITextModelSaver): IDisposable;
 }
 
 export interface ITextModelContentProvider {
@@ -41,7 +46,7 @@ export interface ITextModelSaveOptions {
 }
 
 export interface ITextModelSaver {
-	saveTextContent(model: IModel, options: ITextModelSaveOptions): TPromise<void>;
+	saveTextContent(resource: URI, model: IModel, options: ITextModelSaveOptions): TPromise<void>;
 }
 
 export interface ITextModelStateChangeEvent {
