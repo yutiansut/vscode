@@ -206,19 +206,39 @@ export class TextModelResolverService implements ITextModelService {
 	}
 
 	save(resource: URI, options?: ITextModelSaveOptions): TPromise<void> {
+		return this.getModelSaver(resource).then(res => {
+			const { model, saver } = res;
+
+			this._onDidChangeState.fire({ type: 'saving', resource });
+			return saver.saveTextContent(model, options).then(() => {
+				this._onDidChangeState.fire({ type: 'saved', resource });
+			});
+		});
+	}
+
+	revert(resource: URI): TPromise<void> {
+		return this.getModelSaver(resource).then(res => {
+			const { model, saver } = res;
+
+			this._onDidChangeState.fire({ type: 'reverting', resource });
+			return saver.revertTextContent(model).then(() => {
+				this._onDidChangeState.fire({ type: 'reverted', resource });
+			});
+		});
+	}
+
+	getModelSaver(resource: URI): TPromise<{ model: IModel, saver: ITextModelSaver }> {
 		const model = this.modelService.getModel(resource);
 		if (!model) {
-			return TPromise.wrapError<void>('MISSING_MODEL');
-		}
-		const saver = this._modelSaver.get(resource.scheme);
-		if (!saver) {
-			return TPromise.wrapError<void>('MISSING_SAVER');
+			return TPromise.wrapError<{ model: IModel, saver: ITextModelSaver }>('MISSING_MODEL');
 		}
 
-		this._onDidChangeState.fire({ type: 'saving', resource });
-		return saver.saveTextContent(resource, model, options).then(() => {
-			this._onDidChangeState.fire({ type: 'saved', resource });
-		});
+		const saver = this._modelSaver.get(resource.scheme);
+		if (!saver) {
+			return TPromise.wrapError<{ model: IModel, saver: ITextModelSaver }>('MISSING_SAVER');
+		}
+
+		return TPromise.as({ model, saver });
 	}
 
 	supportsSave(resource: URI): boolean {

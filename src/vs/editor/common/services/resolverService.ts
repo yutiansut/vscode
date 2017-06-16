@@ -45,6 +45,12 @@ export interface ITextModelService {
 	save(resource: URI, options?: ITextModelSaveOptions): TPromise<void>;
 
 	/**
+	 * Reverts the provided resource. This will only work if a ITextModelSaver is registered for the
+	 * scheme of the resource.
+	 */
+	revert(resource: URI): TPromise<void>;
+
+	/**
 	 * Finds out if a resource supports saving via the ITextModelSaver helper.
 	 */
 	supportsSave(resource: URI): boolean;
@@ -63,11 +69,12 @@ export interface ITextModelSaveOptions {
 }
 
 export interface ITextModelSaver {
-	saveTextContent(resource: URI, model: IModel, options?: ITextModelSaveOptions): TPromise<void>;
+	saveTextContent(model: IModel, options?: ITextModelSaveOptions): TPromise<void>;
+	revertTextContent(model: IModel): TPromise<void>;
 }
 
 export interface ITextModelStateChangeEvent {
-	type: 'dirty' | 'reverted' | 'saving' | 'saved';
+	type: 'dirty' | 'reverting' | 'reverted' | 'saving' | 'saved';
 	resource: URI;
 }
 

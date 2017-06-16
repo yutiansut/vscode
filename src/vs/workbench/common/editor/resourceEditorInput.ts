@@ -58,9 +58,12 @@ export class ResourceEditorInput extends EditorInput {
 
 	private onDirtyStateChange(e: ITextModelStateChangeEvent): void {
 		if (e.resource.toString() === this.resource.toString()) {
-			this._onDidChangeDirty.fire();
+			const isDirty = (e.type === 'dirty');
+			if (isDirty !== this.dirty) {
+				this._onDidChangeDirty.fire();
+			}
 
-			this.dirty = (e.type === 'dirty');
+			this.dirty = isDirty;
 		}
 	}
 
@@ -97,7 +100,7 @@ export class ResourceEditorInput extends EditorInput {
 	}
 
 	public revert(): TPromise<boolean> {
-		return TPromise.wrapError('Unsupported: ResourceEditorInput.revert()'); // TODO@Ben implement
+		return this.textModelResolverService.revert(this.resource).then(() => true, () => false);
 	}
 
 	public getResource(): URI {

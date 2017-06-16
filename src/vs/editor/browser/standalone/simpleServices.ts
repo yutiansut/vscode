@@ -228,6 +228,10 @@ export class SimpleEditorModelResolverService implements ITextModelService {
 		return TPromise.as(null);
 	}
 
+	public revert(resource: URI): TPromise<void> {
+		return TPromise.as(null);
+	}
+
 	public supportsSave(resource: URI): boolean {
 		return false;
 	}

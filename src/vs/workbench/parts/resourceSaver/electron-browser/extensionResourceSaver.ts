@@ -62,8 +62,14 @@ export class ExtensionResourceSaver implements IWorkbenchContribution, ITextMode
 		return TPromise.as(codeEditorModel);
 	}
 
-	public saveTextContent(resource: URI, model: IModel, options?: ITextModelSaveOptions): TPromise<void> {
+	public saveTextContent(model: IModel, options?: ITextModelSaveOptions): TPromise<void> {
 		value = model.getValue();
+
+		return TPromise.as(null);
+	}
+
+	public revertTextContent(model: IModel): TPromise<void> {
+		this.modelService.updateModel(model, value);
 
 		return TPromise.as(null);
 	}
