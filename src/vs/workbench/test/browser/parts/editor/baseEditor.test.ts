@@ -18,6 +18,8 @@ import { PLAINTEXT_MODE_ID } from 'vs/editor/common/modes/modesRegistry';
 import { workbenchInstantiationService } from 'vs/workbench/test/workbenchTestServices';
 import { ResourceEditorInput } from 'vs/workbench/common/editor/resourceEditorInput';
 import { TestThemeService } from "vs/platform/theme/test/common/testThemeService";
+import { TextModelResolverService } from "vs/workbench/services/textmodelResolver/common/textModelResolverService";
+import { ITextModelService } from "vs/editor/common/services/resolverService";
 
 
 const NullThemeService = new TestThemeService();

@@ -5,7 +5,7 @@
 
 'use strict';
 
-import { Registry } from "vs/platform/platform";
+import { Registry } from "vs/platform/registry/common/platform";
 import { ExtensionResourceSaver, OpenExtensionResourceAction } from "vs/workbench/parts/resourceSaver/electron-browser/extensionResourceSaver";
 import { IWorkbenchContributionsRegistry, Extensions as WorkbenchExtensions } from "vs/workbench/common/contributions";
 import { IWorkbenchActionRegistry, Extensions as ActionExtensions } from "vs/workbench/common/actionRegistry";
