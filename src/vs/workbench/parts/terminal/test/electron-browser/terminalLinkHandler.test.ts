@@ -47,7 +47,7 @@ interface LinkFormatInfo {
 
 class TestWorkspace extends Workspace {
 	constructor(private basePath: string) {
-		super(new TestURI(basePath));
+		super(basePath, basePath, [new TestURI(basePath)]);
 	}
 }
 

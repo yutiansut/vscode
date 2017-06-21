@@ -9,13 +9,14 @@ import * as types from 'vs/base/common/types';
 import * as objects from 'vs/base/common/objects';
 import URI from 'vs/base/common/uri';
 import { StrictResourceMap } from 'vs/base/common/map';
+import { Workspace } from 'vs/platform/workspace/common/workspace';
 import { createDecorator } from 'vs/platform/instantiation/common/instantiation';
 import Event from 'vs/base/common/event';
 
 export const IConfigurationService = createDecorator<IConfigurationService>('configurationService');
 
 export interface IConfigurationOverrides {
-	language?: string;
+	overrideIdentifier?: string;
 	resource?: URI;
 }
 
@@ -36,7 +37,7 @@ export interface IConfigurationService {
 	 * Resolves a configuration key to its values in the different scopes
 	 * the setting is defined.
 	 */
-	lookup<T>(key: string, overrideIdentifier?: string): IConfigurationValue<T>;
+	lookup<T>(key: string, overrides?: IConfigurationOverrides): IConfigurationValue<T>;
 
 	/**
 	 * Returns the defined keys of configurations in the different scopes
@@ -128,6 +129,7 @@ export function merge(base: any, add: any, overwrite: boolean): void {
 
 export interface IConfiguraionModel<T> {
 	contents: T;
+	keys: string[];
 	overrides: IOverrides<T>[];
 }
 
@@ -138,9 +140,7 @@ export interface IOverrides<T> {
 
 export class ConfigurationModel<T> implements IConfiguraionModel<T> {
 
-	protected _keys: string[] = [];
-
-	constructor(protected _contents: T = <T>{}, protected _overrides: IOverrides<T>[] = []) {
+	constructor(protected _contents: T = <T>{}, protected _keys: string[] = [], protected _overrides: IOverrides<T>[] = []) {
 	}
 
 	public get contents(): T {
@@ -199,16 +199,15 @@ export interface IConfigurationData<T> {
 	defaults: IConfiguraionModel<T>;
 	user: IConfiguraionModel<T>;
 	folders: { [folder: string]: IConfiguraionModel<T> };
-	workspaceUri: string;
 }
 
 export class Configuration<T> {
 
-	private _global: ConfigurationModel<T>;
-	private _workspace: ConfigurationModel<T>;
-	protected _foldersConsolidated: StrictResourceMap<ConfigurationModel<T>>;
+	private _globalConfiguration: ConfigurationModel<T>;
+	private _workspaceConfiguration: ConfigurationModel<T>;
+	protected _foldersConsolidatedConfigurations: StrictResourceMap<ConfigurationModel<T>>;
 
-	constructor(protected _defaults: ConfigurationModel<T>, protected _user: ConfigurationModel<T>, protected folders: StrictResourceMap<ConfigurationModel<T>> = new StrictResourceMap<ConfigurationModel<T>>(), protected workspaceUri?: URI) {
+	constructor(protected _defaults: ConfigurationModel<T>, protected _user: ConfigurationModel<T>, protected folders: StrictResourceMap<ConfigurationModel<T>> = new StrictResourceMap<ConfigurationModel<T>>(), protected _workspace?: Workspace) {
 		this.merge();
 	}
 
@@ -220,13 +219,9 @@ export class Configuration<T> {
 		return this._user;
 	}
 
-	get workspace(): ConfigurationModel<T> {
-		return this._workspace;
-	}
-
 	protected merge(): void {
-		this._global = this._workspace = new ConfigurationModel<T>().merge(this._defaults).merge(this._user);
-		this._foldersConsolidated = new StrictResourceMap<ConfigurationModel<T>>();
+		this._globalConfiguration = this._workspaceConfiguration = new ConfigurationModel<T>().merge(this._defaults).merge(this._user);
+		this._foldersConsolidatedConfigurations = new StrictResourceMap<ConfigurationModel<T>>();
 		for (const folder of this.folders.keys()) {
 			this.mergeFolder(folder);
 		}
@@ -234,10 +229,10 @@ export class Configuration<T> {
 
 	protected mergeFolder(folder: URI) {
 		if (this.workspaceUri && this.workspaceUri.fsPath === folder.fsPath) {
-			this._workspace = new ConfigurationModel<T>().merge(this._global).merge(this.folders.get(this.workspaceUri));
-			this._foldersConsolidated.set(folder, this._workspace);
+			this._workspaceConfiguration = new ConfigurationModel<T>().merge(this._globalConfiguration).merge(this.folders.get(this.workspaceUri));
+			this._foldersConsolidatedConfigurations.set(folder, this._workspaceConfiguration);
 		} else {
-			this._foldersConsolidated.set(folder, new ConfigurationModel<T>().merge(this._workspace).merge(this.folders.get(folder)));
+			this._foldersConsolidatedConfigurations.set(folder, new ConfigurationModel<T>().merge(this._workspaceConfiguration).merge(this.folders.get(folder)));
 		}
 	}
 
@@ -246,13 +241,14 @@ export class Configuration<T> {
 		return section ? configModel.getContentsFor<C>(section) : configModel.contents;
 	}
 
-	lookup<C>(key: string, overrideIdentifier?: string): IConfigurationValue<C> {
+	lookup<C>(key: string, overrides: IConfigurationOverrides = {}): IConfigurationValue<C> {
 		// make sure to clone the configuration so that the receiver does not tamper with the values
+		const workspaceConfiguration = this.getConfigurationModel(overrides);
 		return {
-			default: objects.clone(getConfigurationValue<C>(overrideIdentifier ? this._defaults.override(overrideIdentifier).contents : this._defaults.contents, key)),
-			user: objects.clone(getConfigurationValue<C>(overrideIdentifier ? this._user.override(overrideIdentifier).contents : this._user.contents, key)),
-			workspace: objects.clone(this.workspaceUri ? getConfigurationValue<C>(overrideIdentifier ? this.folders.get(this.workspaceUri).override(overrideIdentifier).contents : this.folders.get(this.workspaceUri).contents, key) : void 0),
-			value: objects.clone(getConfigurationValue<C>(overrideIdentifier ? this._workspace.override(overrideIdentifier).contents : this._workspace.contents, key))
+			default: objects.clone(getConfigurationValue<C>(overrides.overrideIdentifier ? this._defaults.override(overrides.overrideIdentifier).contents : this._defaults.contents, key)),
+			user: objects.clone(getConfigurationValue<C>(overrides.overrideIdentifier ? this._user.override(overrides.overrideIdentifier).contents : this._user.contents, key)),
+			workspace: objects.clone(this.workspaceUri ? getConfigurationValue<C>(overrides.overrideIdentifier ? this.folders.get(this.workspaceUri).override(overrides.overrideIdentifier).contents : this.folders.get(this.workspaceUri).contents, key) : void 0),
+			value: objects.clone(getConfigurationValue<C>(workspaceConfiguration.contents, key))
 		};
 	}
 
@@ -296,42 +292,63 @@ export class Configuration<T> {
 		return result;
 	}
 
+	protected get workspaceUri(): URI {
+		return this._workspace ? this._workspace.roots[0] : null;
+	}
+
 	private getConfigurationModel<C>(overrides: IConfigurationOverrides): ConfigurationModel<any> {
-		let configurationModel = overrides.resource ? this._foldersConsolidated.get(overrides.resource) || this._workspace : this._workspace;
-		return overrides.language ? configurationModel.override<T>(overrides.language) : configurationModel;
+		let configurationModel = this.getConfigurationForResource(overrides);
+		return overrides.overrideIdentifier ? configurationModel.override<T>(overrides.overrideIdentifier) : configurationModel;
+	}
+
+	private getConfigurationForResource({ resource }: IConfigurationOverrides): ConfigurationModel<any> {
+		if (!this._workspace) {
+			return this._globalConfiguration;
+		}
+
+		if (!resource) {
+			return this._workspaceConfiguration;
+		}
+
+		const root = this._workspace.getRoot(resource);
+		if (!root) {
+			return this._workspaceConfiguration;
+		}
+
+		return this._foldersConsolidatedConfigurations.get(root) || this._workspaceConfiguration;
 	}
 
 	public toData(): IConfigurationData<any> {
 		return {
 			defaults: {
 				contents: this._defaults.contents,
-				overrides: this._defaults.overrides
+				overrides: this._defaults.overrides,
+				keys: this._defaults.keys
 			},
 			user: {
 				contents: this._user.contents,
-				overrides: this._user.overrides
+				overrides: this._user.overrides,
+				keys: this._user.keys
 			},
 			folders: this.folders.keys().reduce((result, folder) => {
-				const { contents, overrides } = this.folders.get(folder);
-				result[folder.toString()] = { contents, overrides };
+				const { contents, overrides, keys } = this.folders.get(folder);
+				result[folder.toString()] = { contents, overrides, keys };
 				return result;
-			}, Object.create({})),
-			workspaceUri: this.workspaceUri ? this.workspaceUri.toString() : void 0
+			}, Object.create({}))
 		};
 	}
 
-	public static parse(data: IConfigurationData<any>): Configuration<any> {
+	public static parse(data: IConfigurationData<any>, workspace: Workspace): Configuration<any> {
 		const defaults = Configuration.parseConfigurationModel(data.defaults);
 		const user = Configuration.parseConfigurationModel(data.user);
 		const folders: StrictResourceMap<ConfigurationModel<any>> = Object.keys(data.folders).reduce((result, key) => {
 			result.set(URI.parse(key), Configuration.parseConfigurationModel(data.folders[key]));
 			return result;
 		}, new StrictResourceMap<ConfigurationModel<any>>());
-		const workspaceUri = data.workspaceUri ? URI.parse(data.workspaceUri) : void 0;
-		return new Configuration<any>(defaults, user, folders, workspaceUri);
+		return new Configuration<any>(defaults, user, folders, workspace);
 	}
 
 	private static parseConfigurationModel(model: IConfiguraionModel<any>): ConfigurationModel<any> {
-		return new ConfigurationModel(model.contents, model.overrides);
+		return new ConfigurationModel(model.contents, model.keys, model.overrides);
 	}
 }

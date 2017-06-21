@@ -9,6 +9,7 @@ import Event, { Emitter } from 'vs/base/common/event';
 import { normalize } from 'vs/base/common/paths';
 import { isFalsyOrEmpty } from 'vs/base/common/arrays';
 import { relative } from 'path';
+import { Workspace } from 'vs/platform/workspace/common/workspace';
 import { IThreadService } from 'vs/workbench/services/thread/common/threadService';
 import { IResourceEdit } from 'vs/editor/common/services/bulkEdit';
 import { TPromise } from 'vs/base/common/winjs.base';
@@ -20,25 +21,42 @@ export class ExtHostWorkspace extends ExtHostWorkspaceShape {
 
 	private static _requestIdPool = 0;
 
-	private readonly _onDidChangeWorkspace = new Emitter<this>();
+	private readonly _onDidChangeWorkspace = new Emitter<URI[]>();
 	private readonly _proxy: MainThreadWorkspaceShape;
-	private _workspace: IWorkspaceData;
+	private _workspace: Workspace;
 
-	readonly onDidChangeWorkspace: Event<this> = this._onDidChangeWorkspace.event;
+	readonly onDidChangeWorkspace: Event<URI[]> = this._onDidChangeWorkspace.event;
 
-	constructor(threadService: IThreadService, workspace: IWorkspaceData) {
+	constructor(threadService: IThreadService, data: IWorkspaceData) {
 		super();
 		this._proxy = threadService.get(MainContext.MainThreadWorkspace);
-		this._workspace = workspace;
+		this._workspace = data ? new Workspace(data.id, data.name, data.roots) : null;
 	}
 
 	// --- workspace ---
+
+	getRoots(): URI[] {
+		if (!this._workspace) {
+			return undefined;
+		} else {
+			return this._workspace.roots.slice(0);
+		}
+	}
 
 	getPath(): string {
 		// this is legacy from the days before having
 		// multi-root and we keep it only alive if there
 		// is just one workspace folder.
-		return this._workspace ? this._workspace.roots[0].fsPath : undefined;
+		if (!this._workspace) {
+			return undefined;
+		}
+		const { roots } = this._workspace;
+		if (roots.length === 1) {
+			return roots[0].fsPath;
+		}
+		// return `undefined` when there no or more than 1
+		// root folder.
+		return undefined;
 	}
 
 	getRelativePath(pathOrUri: string | vscode.Uri): string {
@@ -69,9 +87,9 @@ export class ExtHostWorkspace extends ExtHostWorkspaceShape {
 		return normalize(path);
 	}
 
-	$acceptWorkspaceData(workspace: IWorkspaceData): void {
-		this._workspace = workspace;
-		this._onDidChangeWorkspace.fire(this);
+	$acceptWorkspaceData(data: IWorkspaceData): void {
+		this._workspace = data ? new Workspace(data.id, data.name, data.roots) : null;
+		this._onDidChangeWorkspace.fire(this.getRoots());
 	}
 
 	// --- search ---
