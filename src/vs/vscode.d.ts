@@ -4452,6 +4452,11 @@ declare module 'vscode' {
 		 * Args for the custom shell executable, this does not work on Windows (see #8429)
 		 */
 		shellArgs?: string[];
+		/**
+		 * A custom environment for the terminal, if this is not set the environment will be inherited
+		 * from the VS Code process.
+		 */
+		env?: { [key: string]: string };
 	}
 
 	/**

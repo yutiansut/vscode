@@ -31,13 +31,14 @@ export class MainThreadTerminalService extends MainThreadTerminalServiceShape {
 		this._toDispose = dispose(this._toDispose);
 	}
 
-	public $createTerminal(name?: string, shellPath?: string, shellArgs?: string[], waitOnExit?: boolean): TPromise<number> {
+	public $createTerminal(name?: string, shellPath?: string, shellArgs?: string[], env?: { [key: string]: string }, waitOnExit?: boolean): TPromise<number> {
 		const shellLaunchConfig: IShellLaunchConfig = {
 			name,
 			executable: shellPath,
 			args: shellArgs,
 			waitOnExit,
-			ignoreConfigurationCwd: true
+			ignoreConfigurationCwd: true,
+			env
 		};
 		return TPromise.as(this.terminalService.createInstance(shellLaunchConfig).id);
 	}
