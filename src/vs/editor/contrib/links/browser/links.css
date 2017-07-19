@@ -10,3 +10,14 @@
 .monaco-editor .detected-link-active {
 	cursor: pointer;
 }
+
+.monaco-editor .detected-link-command::after {
+	box-sizing: border-box;
+	content: " ";
+	width: 12px;
+	height: 12px;
+	display: inline-block;
+	background-image: url('./ScriptLink_16x_vscode.svg');
+	background-repeat: no-repeat;
+	background-position: left 1px bottom -1px;
+}

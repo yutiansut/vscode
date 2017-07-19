@@ -118,7 +118,11 @@ export function renderMarkdown(markdown: string, options: RenderOptions = {}): N
 		if (!href || href.match(/^data:|javascript:/i)) {
 			return text;
 		}
-		return `<a href="#" data-href="${href}" title="${title || text}">${text}</a>`;
+		let innerHtml = text;
+		if (href.match(/^command:/i)) {
+			innerHtml += `<span title="${href}" style="margin-left: 0.3em" class="octicon octicon-terminal"></span>`;
+		}
+		return `<a href="#" data-href="${href}" title="${title || text}">${innerHtml}</a>`;
 	};
 	renderer.paragraph = (text): string => {
 		return `<p>${text}</p>`;
