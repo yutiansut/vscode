@@ -67,20 +67,30 @@ class IPCRunner extends events.EventEmitter {
 
 		this.didFail = false;
 
-		ipcMain.on('start', () => this.emit('start'));
-		ipcMain.on('end', () => this.emit('end'));
-		ipcMain.on('suite', (e, suite) => this.emit('suite', deserializeSuite(suite)));
-		ipcMain.on('suite end', (e, suite) => this.emit('suite end', deserializeSuite(suite)));
-		ipcMain.on('test', (e, test) => this.emit('test', deserializeRunnable(test)));
-		ipcMain.on('test end', (e, test) => this.emit('test end', deserializeRunnable(test)));
-		ipcMain.on('hook', (e, hook) => this.emit('hook', deserializeRunnable(hook)));
-		ipcMain.on('hook end', (e, hook) => this.emit('hook end', deserializeRunnable(hook)));
-		ipcMain.on('pass', (e, test) => this.emit('pass', deserializeRunnable(test)));
+		var self = this;
+		function em(a, b) {
+			console.log('main emit ' + a);
+			if (b) {
+				self.emit(a, b);
+			} else {
+				self.emit(a);
+			}
+		}
+
+		ipcMain.on('start', () => em('start'));
+		ipcMain.on('end', () => em('end'));
+		ipcMain.on('suite', (e, suite) => em('suite', deserializeSuite(suite)));
+		ipcMain.on('suite end', (e, suite) => em('suite end', deserializeSuite(suite)));
+		ipcMain.on('test', (e, test) => em('test', deserializeRunnable(test)));
+		ipcMain.on('test end', (e, test) => em('test end', deserializeRunnable(test)));
+		ipcMain.on('hook', (e, hook) => em('hook', deserializeRunnable(hook)));
+		ipcMain.on('hook end', (e, hook) => em('hook end', deserializeRunnable(hook)));
+		ipcMain.on('pass', (e, test) => em('pass', deserializeRunnable(test)));
 		ipcMain.on('fail', (e, test, err) => {
 			this.didFail = true;
-			this.emit('fail', deserializeRunnable(test), deserializeError(err));
+			em('fail', deserializeRunnable(test), deserializeError(err));
 		});
-		ipcMain.on('pending', (e, test) => this.emit('pending', deserializeRunnable(test)));
+		ipcMain.on('pending', (e, test) => em('pending', deserializeRunnable(test)));
 	}
 }
 

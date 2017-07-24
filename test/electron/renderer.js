@@ -217,17 +217,17 @@ function serializeError(err) {
 class IPCReporter {
 
 	constructor(runner) {
-		runner.on('start', () => ipcRenderer.send('start'));
-		runner.on('end', () => ipcRenderer.send('end'));
-		runner.on('suite', suite => ipcRenderer.send('suite', serializeSuite(suite)));
-		runner.on('suite end', suite => ipcRenderer.send('suite end', serializeSuite(suite)));
-		runner.on('test', test => ipcRenderer.send('test', serializeRunnable(test)));
-		runner.on('test end', test => ipcRenderer.send('test end', serializeRunnable(test)));
-		runner.on('hook', hook => ipcRenderer.send('hook', serializeRunnable(hook)));
-		runner.on('hook end', hook => ipcRenderer.send('hook end', serializeRunnable(hook)));
-		runner.on('pass', test => ipcRenderer.send('pass', serializeRunnable(test)));
-		runner.on('fail', (test, err) => ipcRenderer.send('fail', serializeRunnable(test), serializeError(err)));
-		runner.on('pending', test => ipcRenderer.send('pending', serializeRunnable(test)));
+		runner.on('start', () => { console.log('renderer send start'); ipcRenderer.send('start'); });
+		runner.on('end', () => { console.log('renderer send end'); ipcRenderer.send('end'); });
+		runner.on('suite', suite => { console.log('renderer send suite'); ipcRenderer.send('suite', serializeSuite(suite)); });
+		runner.on('suite end', suite => { console.log('renderer send suite end'); ipcRenderer.send('suite end', serializeSuite(suite)); });
+		runner.on('test', test => { console.log('renderer send test'); ipcRenderer.send('test', serializeRunnable(test)); });
+		runner.on('test end', test => { console.log('renderer send test end'); ipcRenderer.send('test end', serializeRunnable(test)); });
+		runner.on('hook', hook => { console.log('renderer send hook'); ipcRenderer.send('hook', serializeRunnable(hook)); });
+		runner.on('hook end', hook => { console.log('renderer send hook end'); ipcRenderer.send('hook end', serializeRunnable(hook)); });
+		runner.on('pass', test => { console.log('renderer send pass'); ipcRenderer.send('pass', serializeRunnable(test)); });
+		runner.on('fail', (test, err) => { console.log('renderer send fail'); ipcRenderer.send('fail', serializeRunnable(test), serializeError(err)); });
+		runner.on('pending', test => { console.log('renderer send pending'); ipcRenderer.send('pending', serializeRunnable(test)); });
 	}
 }
 
@@ -239,9 +239,9 @@ function runTests(opts) {
 			mocha.grep(opts.grep);
 		}
 
-		if (!opts.debug) {
+		// if (!opts.debug) {
 			mocha.reporter(IPCReporter);
-		}
+		// }
 
 		const runner = mocha.run(() => {
 			createCoverageReport(opts).then(() => {
