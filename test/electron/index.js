@@ -121,7 +121,10 @@ app.on('ready', () => {
 	new Reporter(runner);
 
 	if (!argv.debug) {
-		console.log('runner.didFail: ' + runner.didFail);
-		ipcMain.on('all done', () => app.exit(runner.didFail ? 1 : 0));
+		ipcMain.on('all done', () => {
+			console.log('runner.didFail: ' + runner.didFail);
+			console.log('exit with code: ' + (runner.didFail ? 1 : 0));
+			app.exit(runner.didFail ? 1 : 0)
+		});
 	}
 });
