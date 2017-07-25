@@ -19,12 +19,16 @@ if exist .\.build\electron\version (set /p INSTALLEDVERSION=<.\.build\electron\v
 
 if not exist %CODE% node .\node_modules\gulp\bin\gulp.js electron
 if not "%INSTALLEDVERSION%" == "%DESIREDVERSION%" node .\node_modules\gulp\bin\gulp.js electron
+echo 'after gulp.js errorlevel'
+echo %errorlevel%
 
 :: Run tests
 %CODE% .\test\electron\index.js %*
+echo 'after CODE errorlevel'
+echo %errorlevel%
 
 popd
-echo 'errorlevel'
+echo 'after popd errorlevel'
 echo %errorlevel%
 endlocal
 exit /b %errorlevel%
