@@ -77,6 +77,7 @@ class IPCRunner extends events.EventEmitter {
 		ipcMain.on('hook end', (e, hook) => this.emit('hook end', deserializeRunnable(hook)));
 		ipcMain.on('pass', (e, test) => this.emit('pass', deserializeRunnable(test)));
 		ipcMain.on('fail', (e, test, err) => {
+			console.log('fail', test);
 			this.didFail = true;
 			this.emit('fail', deserializeRunnable(test), deserializeError(err));
 		});
@@ -120,6 +121,7 @@ app.on('ready', () => {
 	new Reporter(runner);
 
 	if (!argv.debug) {
+		console.log('runner.didFail: ' + runner.didFail);
 		ipcMain.on('all done', () => app.exit(runner.didFail ? 1 : 0));
 	}
 });
