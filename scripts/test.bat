@@ -24,6 +24,7 @@ if not "%INSTALLEDVERSION%" == "%DESIREDVERSION%" node .\node_modules\gulp\bin\g
 %CODE% .\test\electron\index.js %*
 
 popd
-
+echo 'errorlevel'
+echo %errorlevel%
 endlocal
 exit /b %errorlevel%
