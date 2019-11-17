@@ -17,12 +17,9 @@ import { fetchEditPoint } from './editPoint';
 import { fetchSelectItem } from './selectItem';
 import { evaluateMathExpression } from './evaluateMathExpression';
 import { incrementDecrement } from './incrementDecrement';
-import { LANGUAGE_MODES, getMappingForIncludedLanguages } from './util';
-import { updateExtensionsPath } from 'vscode-emmet-helper';
+import { LANGUAGE_MODES, getMappingForIncludedLanguages, updateEmmetExtensionsPath } from './util';
 import { updateImageSize } from './updateImageSize';
 import { reflectCssValue } from './reflectCssValue';
-
-import * as path from 'path';
 
 export function activate(context: vscode.ExtensionContext) {
 	registerCompletionProviders(context);
@@ -48,7 +45,11 @@ export function activate(context: vscode.ExtensionContext) {
 			return updateTag(inputTag);
 		}
 		return vscode.window.showInputBox({ prompt: 'Enter Tag' }).then(tagName => {
-			return updateTag(tagName);
+			if (tagName) {
+				const update = updateTag(tagName);
+				return update ? update : false;
+			}
+			return false;
 		});
 	}));
 
@@ -97,7 +98,7 @@ export function activate(context: vscode.ExtensionContext) {
 	}));
 
 	context.subscriptions.push(vscode.commands.registerCommand('editor.emmet.action.incrementNumberByOneTenth', () => {
-		return incrementDecrement(.1);
+		return incrementDecrement(0.1);
 	}));
 
 	context.subscriptions.push(vscode.commands.registerCommand('editor.emmet.action.incrementNumberByOne', () => {
@@ -128,23 +129,15 @@ export function activate(context: vscode.ExtensionContext) {
 		return reflectCssValue();
 	}));
 
-	let currentExtensionsPath = undefined;
-	let resolveUpdateExtensionsPath = () => {
-		let extensionsPath = vscode.workspace.getConfiguration('emmet')['extensionsPath'];
-		if (extensionsPath && !path.isAbsolute(extensionsPath)) {
-			extensionsPath = path.join(vscode.workspace.rootPath, extensionsPath);
-		}
-		if (currentExtensionsPath !== extensionsPath) {
-			currentExtensionsPath = extensionsPath;
-			updateExtensionsPath(currentExtensionsPath).then(null, err => vscode.window.showErrorMessage(err));
-		}
-	};
+	updateEmmetExtensionsPath();
 
-	resolveUpdateExtensionsPath();
-
-	context.subscriptions.push(vscode.workspace.onDidChangeConfiguration(() => {
-		registerCompletionProviders(context);
-		resolveUpdateExtensionsPath();
+	context.subscriptions.push(vscode.workspace.onDidChangeConfiguration((e) => {
+		if (e.affectsConfiguration('emmet.includeLanguages')) {
+			registerCompletionProviders(context);
+		}
+		if (e.affectsConfiguration('emmet.extensionsPath')) {
+			updateEmmetExtensionsPath();
+		}
 	}));
 }
 
@@ -164,12 +157,15 @@ function registerCompletionProviders(context: vscode.ExtensionContext) {
 		}
 
 		if (languageMappingForCompletionProviders.has(language)) {
-			completionProvidersMapping.get(language).dispose();
+			const mapping = completionProvidersMapping.get(language);
+			if (mapping) {
+				mapping.dispose();
+			}
 			languageMappingForCompletionProviders.delete(language);
 			completionProvidersMapping.delete(language);
 		}
 
-		const provider = vscode.languages.registerCompletionItemProvider(language, completionProvider, ...LANGUAGE_MODES[includedLanguages[language]]);
+		const provider = vscode.languages.registerCompletionItemProvider([{ language, scheme: 'file' }, { language, scheme: 'untitled' }], completionProvider, ...LANGUAGE_MODES[includedLanguages[language]]);
 		context.subscriptions.push(provider);
 
 		languageMappingForCompletionProviders.set(language, includedLanguages[language]);
@@ -178,7 +174,7 @@ function registerCompletionProviders(context: vscode.ExtensionContext) {
 
 	Object.keys(LANGUAGE_MODES).forEach(language => {
 		if (!languageMappingForCompletionProviders.has(language)) {
-			const provider = vscode.languages.registerCompletionItemProvider(language, completionProvider, ...LANGUAGE_MODES[language]);
+			const provider = vscode.languages.registerCompletionItemProvider([{ language, scheme: 'file' }, { language, scheme: 'untitled' }], completionProvider, ...LANGUAGE_MODES[language]);
 			context.subscriptions.push(provider);
 
 			languageMappingForCompletionProviders.set(language, language);

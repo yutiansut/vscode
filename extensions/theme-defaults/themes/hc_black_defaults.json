@@ -5,10 +5,22 @@
 		"editor.background": "#000000",
 		"editor.foreground": "#FFFFFF",
 		"editorIndentGuide.background": "#FFFFFF",
+		"editorIndentGuide.activeBackground": "#FFFFFF",
+		"statusBarItem.remoteBackground": "#00000000",
 		"sideBarTitle.foreground": "#FFFFFF"
 	},
 	"settings": [
 		{
+			"settings": {
+				"foreground": "#FFFFFF",
+				"background": "#000000"
+			}
+		},
+		{
+			"scope": [
+				"meta.embedded",
+				"source.groovy.embedded"
+			],
 			"settings": {
 				"foreground": "#FFFFFF",
 				"background": "#000000"
@@ -59,6 +71,12 @@
 			"scope": "constant.regexp",
 			"settings": {
 				"foreground": "#b46695"
+			}
+		},
+		{
+			"scope": "constant.character",
+			"settings": {
+				"foreground": "#569cd6"
 			}
 		},
 		{
@@ -146,12 +164,6 @@
 			}
 		},
 		{
-			"scope": "meta.selector",
-			"settings": {
-				"foreground": "#d7ba7d"
-			}
-		},
-		{
 			"name": "brackets of XML/HTML tags",
 			"scope": [
 				"punctuation.definition.tag"
@@ -227,11 +239,11 @@
 			}
 		},
 		{
-			"name": "JavaScript string interpolation ${}",
+			"name": "String interpolation",
 			"scope": [
 				"punctuation.definition.template-expression.begin",
 				"punctuation.definition.template-expression.end",
-				"punctuation.section.embedded.coffee"
+				"punctuation.section.embedded"
 			],
 			"settings": {
 				"foreground": "#569cd6"

@@ -91,8 +91,7 @@ export default class DocumentMergeConflictTracker implements vscode.Disposable, 
 			return false;
 		}
 
-		var task = this.cache.get(key);
-
+		const task = this.cache.get(key);
 		if (!task) {
 			return false;
 		}
@@ -116,7 +115,7 @@ export default class DocumentMergeConflictTracker implements vscode.Disposable, 
 		this.cache.clear();
 	}
 
-	private getConflictsOrEmpty(document: vscode.TextDocument, origins: string[]): interfaces.IDocumentMergeConflict[] {
+	private getConflictsOrEmpty(document: vscode.TextDocument, _origins: string[]): interfaces.IDocumentMergeConflict[] {
 		const containsConflict = MergeConflictParser.containsConflict(document);
 
 		if (!containsConflict) {
@@ -128,7 +127,7 @@ export default class DocumentMergeConflictTracker implements vscode.Disposable, 
 	}
 
 	private getCacheKey(document: vscode.TextDocument): string | null {
-		if (document.uri && document.uri) {
+		if (document.uri) {
 			return document.uri.toString();
 		}
 

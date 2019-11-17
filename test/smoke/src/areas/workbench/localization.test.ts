@@ -3,44 +3,44 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as assert from 'assert';
+import { Application, Quality } from '../../../../automation';
 
-import { SpectronApplication, VSCODE_BUILD } from '../../spectron/application';
+export function setup() {
+	describe('Localization', () => {
+		before(async function () {
+			const app = this.app as Application;
 
-describe('Localization', () => {
-	let app: SpectronApplication = new SpectronApplication();
-	if (app.build === VSCODE_BUILD.DEV) {
-		return;
-	}
+			if (app.quality === Quality.Dev) {
+				return;
+			}
 
-	after(() => app.stop());
+			await app.workbench.extensions.openExtensionsViewlet();
+			await app.workbench.extensions.installExtension('ms-ceintl.vscode-language-pack-de', 'German Language Pack for Visual Studio Code');
 
-	it(`starts with 'DE' locale and verifies title and viewlets text is in German`, async function () {
-		await app.start('Localization', ['--locale=DE']);
-		app.screenCapturer.testName = 'DE locale test';
+			await app.restart({ extraArgs: ['--locale=DE'] });
+		});
 
-		let text = await app.workbench.explorer.getOpenEditorsViewTitle();
-		await app.screenCapturer.capture('Open editors title');
-		assert.equal(text.toLowerCase(), 'geöffnete editoren');
+		it(`starts with 'DE' locale and verifies title and viewlets text is in German`, async function () {
+			const app = this.app as Application;
 
-		await app.workbench.search.openSearchViewlet();
-		text = await app.workbench.search.getTitle();
-		await app.screenCapturer.capture('Search title');
-		assert.equal(text.toLowerCase(), 'suchen');
+			if (app.quality === Quality.Dev) {
+				this.skip();
+				return;
+			}
 
-		await app.workbench.scm.openSCMViewlet();
-		text = await app.workbench.scm.getTitle();
-		await app.screenCapturer.capture('Scm title');
-		assert.equal(text.toLowerCase(), 'quellcodeverwaltung: vscode-smoketest-express (git)');
+			await app.workbench.explorer.waitForOpenEditorsViewTitle(title => /geöffnete editoren/i.test(title));
 
-		await app.workbench.debug.openDebugViewlet();
-		text = await app.workbench.debug.getTitle();
-		await app.screenCapturer.capture('Debug title');
-		assert.equal(text.toLowerCase(), 'debuggen');
+			await app.workbench.search.openSearchViewlet();
+			await app.workbench.search.waitForTitle(title => /suchen/i.test(title));
 
-		await app.workbench.extensions.openExtensionsViewlet();
-		text = await app.workbench.extensions.getTitle();
-		await app.screenCapturer.capture('Extensions title');
-		assert.equal(text.toLowerCase(), 'erweiterungen');
+			await app.workbench.scm.openSCMViewlet();
+			await app.workbench.scm.waitForTitle(title => /quellcodeverwaltung/i.test(title));
+
+			await app.workbench.debug.openDebugViewlet();
+			await app.workbench.debug.waitForTitle(title => /debug/i.test(title));
+
+			// await app.workbench.extensions.openExtensionsViewlet();
+			// await app.workbench.extensions.waitForTitle(title => /erweiterungen/i.test(title));
+		});
 	});
-});
+}

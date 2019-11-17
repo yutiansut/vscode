@@ -1,3 +1,0 @@
---timeout 60000
---slow 10000
-out/main.js

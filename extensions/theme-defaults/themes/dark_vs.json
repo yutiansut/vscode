@@ -4,16 +4,12 @@
 	"include": "./dark_defaults.json",
 	"tokenColors": [
 		{
+			"scope": [
+				"meta.embedded",
+				"source.groovy.embedded"
+			],
 			"settings": {
-				"foreground": "#D4D4D4",
-				"background": "#1E1E1E"
-			}
-		},
-		{
-			"scope": "meta.embedded",
-			"settings": {
-				"foreground": "#D4D4D4",
-				"background": "#1E1E1E"
+				"foreground": "#D4D4D4"
 			}
 		},
 		{
@@ -37,7 +33,7 @@
 		{
 			"scope": "comment",
 			"settings": {
-				"foreground": "#608b4e"
+				"foreground": "#6A9955"
 			}
 		},
 		{
@@ -48,7 +44,11 @@
 		},
 		{
 			"scope": [
-				"constant.numeric"
+				"constant.numeric",
+				"entity.name.operator.custom-literal.number",
+				"variable.other.enummember",
+				"keyword.operator.plus.exponent",
+				"keyword.operator.minus.exponent"
 			],
 			"settings": {
 				"foreground": "#b5cea8"
@@ -145,13 +145,13 @@
 			}
 		},
 		{
-			"scope": "beginning.punctuation.definition.quote.markdown",
+			"scope": "punctuation.definition.quote.begin.markdown",
 			"settings": {
-				"foreground": "#608b4e"
+				"foreground": "#6A9955"
 			}
 		},
 		{
-			"scope": "beginning.punctuation.definition.list.markdown",
+			"scope": "punctuation.definition.list.begin.markdown",
 			"settings": {
 				"foreground": "#6796e6"
 			}
@@ -163,12 +163,6 @@
 			}
 		},
 		{
-			"scope": "meta.selector",
-			"settings": {
-				"foreground": "#d7ba7d"
-			}
-		},
-		{
 			"name": "brackets of XML/HTML tags",
 			"scope": "punctuation.definition.tag",
 			"settings": {
@@ -176,7 +170,9 @@
 			}
 		},
 		{
-			"scope": "meta.preprocessor",
+			"scope": [
+				"meta.preprocessor"
+			],
 			"settings": {
 				"foreground": "#569cd6"
 			}
@@ -218,13 +214,19 @@
 			}
 		},
 		{
-			"scope": "storage.modifier",
+			"scope": [
+				"storage.modifier",
+				"keyword.operator.noexcept"
+			],
 			"settings": {
 				"foreground": "#569cd6"
 			}
 		},
 		{
-			"scope": "string",
+			"scope": [
+				"string",
+				"entity.name.operator.custom-literal.string",
+			],
 			"settings": {
 				"foreground": "#ce9178"
 			}
@@ -248,11 +250,11 @@
 			}
 		},
 		{
-			"name": "JavaScript string interpolation ${}",
+			"name": "String interpolation",
 			"scope": [
 				"punctuation.definition.template-expression.begin",
 				"punctuation.definition.template-expression.end",
-				"punctuation.section.embedded.coffee"
+				"punctuation.section.embedded"
 			],
 			"settings": {
 				"foreground": "#569cd6"
@@ -304,7 +306,12 @@
 				"keyword.operator.expression",
 				"keyword.operator.cast",
 				"keyword.operator.sizeof",
-				"keyword.operator.logical.python"
+				"keyword.operator.alignof",
+				"keyword.operator.typeid",
+				"keyword.operator.alignas",
+				"keyword.operator.instanceof",
+				"keyword.operator.logical.python",
+				"keyword.operator.wordlike"
 			],
 			"settings": {
 				"foreground": "#569cd6"

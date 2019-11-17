@@ -1,7 +1,7 @@
 [
 	{
 		"c": "<",
-		"t": "text.html.php meta.tag.structure.any.html punctuation.definition.tag.html",
+		"t": "text.html.php meta.tag.structure.html.start.html punctuation.definition.tag.begin.html",
 		"r": {
 			"dark_plus": "punctuation.definition.tag: #808080",
 			"light_plus": "punctuation.definition.tag: #800000",
@@ -12,7 +12,7 @@
 	},
 	{
 		"c": "html",
-		"t": "text.html.php meta.tag.structure.any.html entity.name.tag.structure.any.html",
+		"t": "text.html.php meta.tag.structure.html.start.html entity.name.tag.html",
 		"r": {
 			"dark_plus": "entity.name.tag: #569CD6",
 			"light_plus": "entity.name.tag: #800000",
@@ -23,7 +23,7 @@
 	},
 	{
 		"c": ">",
-		"t": "text.html.php meta.tag.structure.any.html punctuation.definition.tag.html",
+		"t": "text.html.php meta.tag.structure.html.start.html punctuation.definition.tag.end.html",
 		"r": {
 			"dark_plus": "punctuation.definition.tag: #808080",
 			"light_plus": "punctuation.definition.tag: #800000",
@@ -34,7 +34,7 @@
 	},
 	{
 		"c": "<",
-		"t": "text.html.php meta.tag.structure.any.html punctuation.definition.tag.html",
+		"t": "text.html.php meta.tag.structure.head.start.html punctuation.definition.tag.begin.html",
 		"r": {
 			"dark_plus": "punctuation.definition.tag: #808080",
 			"light_plus": "punctuation.definition.tag: #800000",
@@ -45,7 +45,7 @@
 	},
 	{
 		"c": "head",
-		"t": "text.html.php meta.tag.structure.any.html entity.name.tag.structure.any.html",
+		"t": "text.html.php meta.tag.structure.head.start.html entity.name.tag.html",
 		"r": {
 			"dark_plus": "entity.name.tag: #569CD6",
 			"light_plus": "entity.name.tag: #800000",
@@ -56,7 +56,7 @@
 	},
 	{
 		"c": ">",
-		"t": "text.html.php meta.tag.structure.any.html punctuation.definition.tag.html",
+		"t": "text.html.php meta.tag.structure.head.start.html punctuation.definition.tag.end.html",
 		"r": {
 			"dark_plus": "punctuation.definition.tag: #808080",
 			"light_plus": "punctuation.definition.tag: #800000",
@@ -78,7 +78,7 @@
 	},
 	{
 		"c": "<",
-		"t": "text.html.php meta.tag.inline.any.html punctuation.definition.tag.begin.html",
+		"t": "text.html.php meta.tag.metadata.title.start.html punctuation.definition.tag.begin.html",
 		"r": {
 			"dark_plus": "punctuation.definition.tag: #808080",
 			"light_plus": "punctuation.definition.tag: #800000",
@@ -89,7 +89,7 @@
 	},
 	{
 		"c": "title",
-		"t": "text.html.php meta.tag.inline.any.html entity.name.tag.inline.any.html",
+		"t": "text.html.php meta.tag.metadata.title.start.html entity.name.tag.html",
 		"r": {
 			"dark_plus": "entity.name.tag: #569CD6",
 			"light_plus": "entity.name.tag: #800000",
@@ -100,7 +100,7 @@
 	},
 	{
 		"c": ">",
-		"t": "text.html.php meta.tag.inline.any.html punctuation.definition.tag.end.html",
+		"t": "text.html.php meta.tag.metadata.title.start.html punctuation.definition.tag.end.html",
 		"r": {
 			"dark_plus": "punctuation.definition.tag: #808080",
 			"light_plus": "punctuation.definition.tag: #800000",
@@ -122,7 +122,7 @@
 	},
 	{
 		"c": "</",
-		"t": "text.html.php meta.tag.inline.any.html punctuation.definition.tag.begin.html",
+		"t": "text.html.php meta.tag.metadata.title.end.html punctuation.definition.tag.begin.html",
 		"r": {
 			"dark_plus": "punctuation.definition.tag: #808080",
 			"light_plus": "punctuation.definition.tag: #800000",
@@ -133,7 +133,7 @@
 	},
 	{
 		"c": "title",
-		"t": "text.html.php meta.tag.inline.any.html entity.name.tag.inline.any.html",
+		"t": "text.html.php meta.tag.metadata.title.end.html entity.name.tag.html",
 		"r": {
 			"dark_plus": "entity.name.tag: #569CD6",
 			"light_plus": "entity.name.tag: #800000",
@@ -144,7 +144,7 @@
 	},
 	{
 		"c": ">",
-		"t": "text.html.php meta.tag.inline.any.html punctuation.definition.tag.end.html",
+		"t": "text.html.php meta.tag.metadata.title.end.html punctuation.definition.tag.end.html",
 		"r": {
 			"dark_plus": "punctuation.definition.tag: #808080",
 			"light_plus": "punctuation.definition.tag: #800000",
@@ -155,7 +155,7 @@
 	},
 	{
 		"c": "</",
-		"t": "text.html.php meta.tag.structure.any.html punctuation.definition.tag.html",
+		"t": "text.html.php meta.tag.structure.head.end.html punctuation.definition.tag.begin.html",
 		"r": {
 			"dark_plus": "punctuation.definition.tag: #808080",
 			"light_plus": "punctuation.definition.tag: #800000",
@@ -166,7 +166,7 @@
 	},
 	{
 		"c": "head",
-		"t": "text.html.php meta.tag.structure.any.html entity.name.tag.structure.any.html",
+		"t": "text.html.php meta.tag.structure.head.end.html entity.name.tag.html",
 		"r": {
 			"dark_plus": "entity.name.tag: #569CD6",
 			"light_plus": "entity.name.tag: #800000",
@@ -177,7 +177,7 @@
 	},
 	{
 		"c": ">",
-		"t": "text.html.php meta.tag.structure.any.html punctuation.definition.tag.html",
+		"t": "text.html.php meta.tag.structure.head.end.html punctuation.definition.tag.end.html",
 		"r": {
 			"dark_plus": "punctuation.definition.tag: #808080",
 			"light_plus": "punctuation.definition.tag: #800000",
@@ -188,7 +188,7 @@
 	},
 	{
 		"c": "<",
-		"t": "text.html.php meta.tag.structure.any.html punctuation.definition.tag.html",
+		"t": "text.html.php meta.tag.structure.body.start.html punctuation.definition.tag.begin.html",
 		"r": {
 			"dark_plus": "punctuation.definition.tag: #808080",
 			"light_plus": "punctuation.definition.tag: #800000",
@@ -199,7 +199,7 @@
 	},
 	{
 		"c": "body",
-		"t": "text.html.php meta.tag.structure.any.html entity.name.tag.structure.any.html",
+		"t": "text.html.php meta.tag.structure.body.start.html entity.name.tag.html",
 		"r": {
 			"dark_plus": "entity.name.tag: #569CD6",
 			"light_plus": "entity.name.tag: #800000",
@@ -210,7 +210,7 @@
 	},
 	{
 		"c": ">",
-		"t": "text.html.php meta.tag.structure.any.html punctuation.definition.tag.html",
+		"t": "text.html.php meta.tag.structure.body.start.html punctuation.definition.tag.end.html",
 		"r": {
 			"dark_plus": "punctuation.definition.tag: #808080",
 			"light_plus": "punctuation.definition.tag: #800000",
@@ -227,7 +227,7 @@
 			"light_plus": "punctuation.section.embedded.begin.php: #800000",
 			"dark_vs": "punctuation.section.embedded.begin.php: #569CD6",
 			"light_vs": "punctuation.section.embedded.begin.php: #800000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "punctuation.section.embedded: #569CD6"
 		}
 	},
 	{
@@ -238,7 +238,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -260,7 +260,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -282,7 +282,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -293,7 +293,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -304,7 +304,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -315,16 +315,16 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
 		"c": "//",
 		"t": "text.html.php meta.embedded.block.php source.php comment.line.double-slash.php punctuation.definition.comment.php",
 		"r": {
-			"dark_plus": "comment: #608B4E",
+			"dark_plus": "comment: #6A9955",
 			"light_plus": "comment: #008000",
-			"dark_vs": "comment: #608B4E",
+			"dark_vs": "comment: #6A9955",
 			"light_vs": "comment: #008000",
 			"hc_black": "comment: #7CA668"
 		}
@@ -333,9 +333,9 @@
 		"c": " Code to be executed",
 		"t": "text.html.php meta.embedded.block.php source.php comment.line.double-slash.php",
 		"r": {
-			"dark_plus": "comment: #608B4E",
+			"dark_plus": "comment: #6A9955",
 			"light_plus": "comment: #008000",
-			"dark_vs": "comment: #608B4E",
+			"dark_vs": "comment: #6A9955",
 			"light_vs": "comment: #008000",
 			"hc_black": "comment: #7CA668"
 		}
@@ -348,7 +348,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -359,7 +359,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -370,16 +370,16 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
 		"c": "/*",
 		"t": "text.html.php meta.embedded.block.php source.php comment.block.php punctuation.definition.comment.php",
 		"r": {
-			"dark_plus": "comment: #608B4E",
+			"dark_plus": "comment: #6A9955",
 			"light_plus": "comment: #008000",
-			"dark_vs": "comment: #608B4E",
+			"dark_vs": "comment: #6A9955",
 			"light_vs": "comment: #008000",
 			"hc_black": "comment: #7CA668"
 		}
@@ -388,9 +388,9 @@
 		"c": " Example PHP file",
 		"t": "text.html.php meta.embedded.block.php source.php comment.block.php",
 		"r": {
-			"dark_plus": "comment: #608B4E",
+			"dark_plus": "comment: #6A9955",
 			"light_plus": "comment: #008000",
-			"dark_vs": "comment: #608B4E",
+			"dark_vs": "comment: #6A9955",
 			"light_vs": "comment: #008000",
 			"hc_black": "comment: #7CA668"
 		}
@@ -399,9 +399,9 @@
 		"c": "\tmultiline comment",
 		"t": "text.html.php meta.embedded.block.php source.php comment.block.php",
 		"r": {
-			"dark_plus": "comment: #608B4E",
+			"dark_plus": "comment: #6A9955",
 			"light_plus": "comment: #008000",
-			"dark_vs": "comment: #608B4E",
+			"dark_vs": "comment: #6A9955",
 			"light_vs": "comment: #008000",
 			"hc_black": "comment: #7CA668"
 		}
@@ -410,9 +410,9 @@
 		"c": "\t",
 		"t": "text.html.php meta.embedded.block.php source.php comment.block.php",
 		"r": {
-			"dark_plus": "comment: #608B4E",
+			"dark_plus": "comment: #6A9955",
 			"light_plus": "comment: #008000",
-			"dark_vs": "comment: #608B4E",
+			"dark_vs": "comment: #6A9955",
 			"light_vs": "comment: #008000",
 			"hc_black": "comment: #7CA668"
 		}
@@ -421,9 +421,9 @@
 		"c": "*/",
 		"t": "text.html.php meta.embedded.block.php source.php comment.block.php punctuation.definition.comment.php",
 		"r": {
-			"dark_plus": "comment: #608B4E",
+			"dark_plus": "comment: #6A9955",
 			"light_plus": "comment: #008000",
-			"dark_vs": "comment: #608B4E",
+			"dark_vs": "comment: #6A9955",
 			"light_vs": "comment: #008000",
 			"hc_black": "comment: #7CA668"
 		}
@@ -436,7 +436,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -469,7 +469,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -491,7 +491,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -513,7 +513,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -557,7 +557,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -568,7 +568,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -612,7 +612,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -623,7 +623,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -667,7 +667,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -678,7 +678,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -722,7 +722,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -733,7 +733,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -777,7 +777,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -788,7 +788,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -832,7 +832,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -843,7 +843,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -887,7 +887,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -898,7 +898,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -942,7 +942,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -953,7 +953,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -964,7 +964,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -986,7 +986,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1008,7 +1008,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1019,7 +1019,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1030,7 +1030,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1041,7 +1041,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1052,12 +1052,12 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
 		"c": "for",
-		"t": "text.html.php meta.embedded.block.php source.php keyword.control.php",
+		"t": "text.html.php meta.embedded.block.php source.php keyword.control.for.php",
 		"r": {
 			"dark_plus": "keyword.control: #C586C0",
 			"light_plus": "keyword.control: #AF00DB",
@@ -1074,7 +1074,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1107,7 +1107,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1129,12 +1129,12 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
 		"c": "0",
-		"t": "text.html.php meta.embedded.block.php source.php constant.numeric.php",
+		"t": "text.html.php meta.embedded.block.php source.php constant.numeric.decimal.php",
 		"r": {
 			"dark_plus": "constant.numeric: #B5CEA8",
 			"light_plus": "constant.numeric: #09885A",
@@ -1151,7 +1151,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1162,7 +1162,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1195,7 +1195,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1217,12 +1217,12 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
 		"c": "52",
-		"t": "text.html.php meta.embedded.block.php source.php constant.numeric.php",
+		"t": "text.html.php meta.embedded.block.php source.php constant.numeric.decimal.php",
 		"r": {
 			"dark_plus": "constant.numeric: #B5CEA8",
 			"light_plus": "constant.numeric: #09885A",
@@ -1239,7 +1239,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1250,7 +1250,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1294,7 +1294,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1305,7 +1305,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1316,7 +1316,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1327,7 +1327,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1360,7 +1360,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1382,7 +1382,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1404,7 +1404,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1437,7 +1437,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1448,7 +1448,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1459,7 +1459,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1492,7 +1492,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1514,7 +1514,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1525,7 +1525,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1547,7 +1547,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1558,7 +1558,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1602,7 +1602,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1613,7 +1613,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1624,12 +1624,12 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
 		"c": "if",
-		"t": "text.html.php meta.embedded.block.php source.php keyword.control.php",
+		"t": "text.html.php meta.embedded.block.php source.php keyword.control.if.php",
 		"r": {
 			"dark_plus": "keyword.control: #C586C0",
 			"light_plus": "keyword.control: #AF00DB",
@@ -1646,7 +1646,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1679,7 +1679,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1712,7 +1712,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1723,7 +1723,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1745,7 +1745,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1778,7 +1778,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1789,7 +1789,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1800,7 +1800,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1811,7 +1811,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1855,7 +1855,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1866,7 +1866,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1877,7 +1877,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1888,12 +1888,12 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
 		"c": "else",
-		"t": "text.html.php meta.embedded.block.php source.php keyword.control.php",
+		"t": "text.html.php meta.embedded.block.php source.php keyword.control.else.php",
 		"r": {
 			"dark_plus": "keyword.control: #C586C0",
 			"light_plus": "keyword.control: #AF00DB",
@@ -1910,7 +1910,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1921,7 +1921,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1932,7 +1932,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1965,7 +1965,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1976,7 +1976,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -1987,7 +1987,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2009,7 +2009,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2042,7 +2042,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2075,7 +2075,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2086,7 +2086,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2097,7 +2097,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2130,7 +2130,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2163,7 +2163,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2174,7 +2174,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2196,7 +2196,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2229,7 +2229,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2240,7 +2240,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2251,7 +2251,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2262,7 +2262,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2273,7 +2273,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2284,7 +2284,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2306,7 +2306,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2328,7 +2328,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2339,7 +2339,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2350,7 +2350,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2361,7 +2361,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2372,7 +2372,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2405,7 +2405,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2427,7 +2427,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2438,7 +2438,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2460,7 +2460,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2471,7 +2471,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2487,7 +2487,7 @@
 	},
 	{
 		"c": "51",
-		"t": "text.html.php meta.embedded.block.php source.php constant.numeric.php",
+		"t": "text.html.php meta.embedded.block.php source.php constant.numeric.decimal.php",
 		"r": {
 			"dark_plus": "constant.numeric: #B5CEA8",
 			"light_plus": "constant.numeric: #09885A",
@@ -2504,7 +2504,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2515,7 +2515,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2526,7 +2526,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2548,7 +2548,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2625,7 +2625,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2636,7 +2636,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2647,16 +2647,16 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
 		"c": "//",
 		"t": "text.html.php meta.embedded.block.php source.php comment.line.double-slash.php punctuation.definition.comment.php",
 		"r": {
-			"dark_plus": "comment: #608B4E",
+			"dark_plus": "comment: #6A9955",
 			"light_plus": "comment: #008000",
-			"dark_vs": "comment: #608B4E",
+			"dark_vs": "comment: #6A9955",
 			"light_vs": "comment: #008000",
 			"hc_black": "comment: #7CA668"
 		}
@@ -2665,9 +2665,9 @@
 		"c": " display shuffled cards (EXAMPLE ONLY)",
 		"t": "text.html.php meta.embedded.block.php source.php comment.line.double-slash.php",
 		"r": {
-			"dark_plus": "comment: #608B4E",
+			"dark_plus": "comment: #6A9955",
 			"light_plus": "comment: #008000",
-			"dark_vs": "comment: #608B4E",
+			"dark_vs": "comment: #6A9955",
 			"light_vs": "comment: #008000",
 			"hc_black": "comment: #7CA668"
 		}
@@ -2680,12 +2680,12 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
 		"c": "for",
-		"t": "text.html.php meta.embedded.block.php source.php keyword.control.php",
+		"t": "text.html.php meta.embedded.block.php source.php keyword.control.for.php",
 		"r": {
 			"dark_plus": "keyword.control: #C586C0",
 			"light_plus": "keyword.control: #AF00DB",
@@ -2702,7 +2702,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2713,7 +2713,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2746,7 +2746,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2768,12 +2768,12 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
 		"c": "0",
-		"t": "text.html.php meta.embedded.block.php source.php constant.numeric.php",
+		"t": "text.html.php meta.embedded.block.php source.php constant.numeric.decimal.php",
 		"r": {
 			"dark_plus": "constant.numeric: #B5CEA8",
 			"light_plus": "constant.numeric: #09885A",
@@ -2790,7 +2790,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2801,7 +2801,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2834,7 +2834,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2856,12 +2856,12 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
 		"c": "52",
-		"t": "text.html.php meta.embedded.block.php source.php constant.numeric.php",
+		"t": "text.html.php meta.embedded.block.php source.php constant.numeric.decimal.php",
 		"r": {
 			"dark_plus": "constant.numeric: #B5CEA8",
 			"light_plus": "constant.numeric: #09885A",
@@ -2878,7 +2878,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2889,7 +2889,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2933,7 +2933,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2944,7 +2944,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2955,7 +2955,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2966,12 +2966,12 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
 		"c": "if",
-		"t": "text.html.php meta.embedded.block.php source.php keyword.control.php",
+		"t": "text.html.php meta.embedded.block.php source.php keyword.control.if.php",
 		"r": {
 			"dark_plus": "keyword.control: #C586C0",
 			"light_plus": "keyword.control: #AF00DB",
@@ -2988,7 +2988,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -2999,7 +2999,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -3032,7 +3032,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -3054,12 +3054,12 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
 		"c": "52",
-		"t": "text.html.php meta.embedded.block.php source.php constant.numeric.php",
+		"t": "text.html.php meta.embedded.block.php source.php constant.numeric.decimal.php",
 		"r": {
 			"dark_plus": "constant.numeric: #B5CEA8",
 			"light_plus": "constant.numeric: #09885A",
@@ -3076,7 +3076,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -3087,7 +3087,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -3098,7 +3098,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -3109,7 +3109,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -3142,7 +3142,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -3164,12 +3164,12 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
 		"c": "0",
-		"t": "text.html.php meta.embedded.block.php source.php constant.numeric.php",
+		"t": "text.html.php meta.embedded.block.php source.php constant.numeric.decimal.php",
 		"r": {
 			"dark_plus": "constant.numeric: #B5CEA8",
 			"light_plus": "constant.numeric: #09885A",
@@ -3186,7 +3186,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -3197,7 +3197,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -3208,7 +3208,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -3219,7 +3219,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -3241,7 +3241,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -3362,7 +3362,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -3373,7 +3373,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -3384,7 +3384,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -3428,7 +3428,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -3439,7 +3439,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -3450,7 +3450,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -3461,7 +3461,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -3483,7 +3483,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -3505,7 +3505,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -3516,7 +3516,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -3527,7 +3527,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -3538,7 +3538,7 @@
 			"light_plus": "meta.embedded: #000000",
 			"dark_vs": "meta.embedded: #D4D4D4",
 			"light_vs": "meta.embedded: #000000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "meta.embedded: #FFFFFF"
 		}
 	},
 	{
@@ -3549,7 +3549,7 @@
 			"light_plus": "punctuation.section.embedded.end.php: #800000",
 			"dark_vs": "punctuation.section.embedded.end.php: #569CD6",
 			"light_vs": "punctuation.section.embedded.end.php: #800000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "punctuation.section.embedded: #569CD6"
 		}
 	},
 	{
@@ -3560,12 +3560,12 @@
 			"light_plus": "punctuation.section.embedded.end.php: #800000",
 			"dark_vs": "punctuation.section.embedded.end.php: #569CD6",
 			"light_vs": "punctuation.section.embedded.end.php: #800000",
-			"hc_black": "default: #FFFFFF"
+			"hc_black": "punctuation.section.embedded: #569CD6"
 		}
 	},
 	{
 		"c": "</",
-		"t": "text.html.php meta.tag.structure.any.html punctuation.definition.tag.html",
+		"t": "text.html.php meta.tag.structure.body.end.html punctuation.definition.tag.begin.html",
 		"r": {
 			"dark_plus": "punctuation.definition.tag: #808080",
 			"light_plus": "punctuation.definition.tag: #800000",
@@ -3576,7 +3576,7 @@
 	},
 	{
 		"c": "body",
-		"t": "text.html.php meta.tag.structure.any.html entity.name.tag.structure.any.html",
+		"t": "text.html.php meta.tag.structure.body.end.html entity.name.tag.html",
 		"r": {
 			"dark_plus": "entity.name.tag: #569CD6",
 			"light_plus": "entity.name.tag: #800000",
@@ -3587,7 +3587,7 @@
 	},
 	{
 		"c": ">",
-		"t": "text.html.php meta.tag.structure.any.html punctuation.definition.tag.html",
+		"t": "text.html.php meta.tag.structure.body.end.html punctuation.definition.tag.end.html",
 		"r": {
 			"dark_plus": "punctuation.definition.tag: #808080",
 			"light_plus": "punctuation.definition.tag: #800000",
@@ -3598,7 +3598,7 @@
 	},
 	{
 		"c": "</",
-		"t": "text.html.php meta.tag.structure.any.html punctuation.definition.tag.html",
+		"t": "text.html.php meta.tag.structure.html.end.html punctuation.definition.tag.begin.html",
 		"r": {
 			"dark_plus": "punctuation.definition.tag: #808080",
 			"light_plus": "punctuation.definition.tag: #800000",
@@ -3609,7 +3609,7 @@
 	},
 	{
 		"c": "html",
-		"t": "text.html.php meta.tag.structure.any.html entity.name.tag.structure.any.html",
+		"t": "text.html.php meta.tag.structure.html.end.html entity.name.tag.html",
 		"r": {
 			"dark_plus": "entity.name.tag: #569CD6",
 			"light_plus": "entity.name.tag: #800000",
@@ -3620,7 +3620,7 @@
 	},
 	{
 		"c": ">",
-		"t": "text.html.php meta.tag.structure.any.html punctuation.definition.tag.html",
+		"t": "text.html.php meta.tag.structure.html.end.html punctuation.definition.tag.end.html",
 		"r": {
 			"dark_plus": "punctuation.definition.tag: #808080",
 			"light_plus": "punctuation.definition.tag: #800000",

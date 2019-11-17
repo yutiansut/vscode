@@ -3,47 +3,53 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-'use strict';
-
 import { equals } from 'vs/base/common/arrays';
-import { marked } from 'vs/base/common/marked/marked';
+import { UriComponents } from 'vs/base/common/uri';
 
 export interface IMarkdownString {
-	value: string;
-	isTrusted?: boolean;
+	readonly value: string;
+	readonly isTrusted?: boolean;
+	uris?: { [href: string]: UriComponents };
 }
 
 export class MarkdownString implements IMarkdownString {
 
-	value: string;
-	isTrusted?: boolean;
+	private _value: string;
+	private _isTrusted: boolean;
 
-	constructor(value: string = '') {
-		this.value = value;
+	constructor(value: string = '', isTrusted = false) {
+		this._value = value;
+		this._isTrusted = isTrusted;
 	}
+
+	get value() { return this._value; }
+	get isTrusted() { return this._isTrusted; }
 
 	appendText(value: string): MarkdownString {
 		// escape markdown syntax tokens: http://daringfireball.net/projects/markdown/syntax#backslash
-		this.value += value.replace(/[\\`*_{}[\]()#+\-.!]/g, '\\$&');
+		this._value += value
+			.replace(/[\\`*_{}[\]()#+\-.!]/g, '\\$&')
+			.replace('\n', '\n\n');
+
 		return this;
 	}
 
 	appendMarkdown(value: string): MarkdownString {
-		this.value += value;
+		this._value += value;
 		return this;
 	}
 
 	appendCodeblock(langId: string, code: string): MarkdownString {
-		this.value += '\n```';
-		this.value += langId;
-		this.value += '\n';
-		this.value += code;
-		this.value += '\n```\n';
+		this._value += '\n```';
+		this._value += langId;
+		this._value += '\n';
+		this._value += code;
+		this._value += '\n```\n';
 		return this;
 	}
 }
 
-export function isEmptyMarkdownString(oneOrMany: IMarkdownString | IMarkdownString[]): boolean {
+export function isEmptyMarkdownString(oneOrMany: IMarkdownString | IMarkdownString[] | null | undefined): boolean {
 	if (isMarkdownString(oneOrMany)) {
 		return !oneOrMany.value;
 	} else if (Array.isArray(oneOrMany)) {
@@ -56,9 +62,9 @@ export function isEmptyMarkdownString(oneOrMany: IMarkdownString | IMarkdownStri
 export function isMarkdownString(thing: any): thing is IMarkdownString {
 	if (thing instanceof MarkdownString) {
 		return true;
-	} else if (typeof thing === 'object') {
+	} else if (thing && typeof thing === 'object') {
 		return typeof (<IMarkdownString>thing).value === 'string'
-			&& (typeof (<IMarkdownString>thing).isTrusted === 'boolean' || (<IMarkdownString>thing).isTrusted === void 0);
+			&& (typeof (<IMarkdownString>thing).isTrusted === 'boolean' || (<IMarkdownString>thing).isTrusted === undefined);
 	}
 	return false;
 }
@@ -94,15 +100,24 @@ export function removeMarkdownEscapes(text: string): string {
 	return text.replace(/\\([\\`*_{}[\]()#+\-.!])/g, '$1');
 }
 
-export function containsCommandLink(value: string): boolean {
-	let uses = false;
-	const renderer = new marked.Renderer();
-	renderer.link = (href, title, text): string => {
-		if (href.match(/^command:/i)) {
-			uses = true;
+export function parseHrefAndDimensions(href: string): { href: string, dimensions: string[] } {
+	const dimensions: string[] = [];
+	const splitted = href.split('|').map(s => s.trim());
+	href = splitted[0];
+	const parameters = splitted[1];
+	if (parameters) {
+		const heightFromParams = /height=(\d+)/.exec(parameters);
+		const widthFromParams = /width=(\d+)/.exec(parameters);
+		const height = heightFromParams ? heightFromParams[1] : '';
+		const width = widthFromParams ? widthFromParams[1] : '';
+		const widthIsFinite = isFinite(parseInt(width));
+		const heightIsFinite = isFinite(parseInt(height));
+		if (widthIsFinite) {
+			dimensions.push(`width="${width}"`);
 		}
-		return 'link';
-	};
-	marked(value, { renderer });
-	return uses;
+		if (heightIsFinite) {
+			dimensions.push(`height="${height}"`);
+		}
+	}
+	return { href, dimensions };
 }

@@ -3,33 +3,57 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as assert from 'assert';
-import { SpectronApplication, CODE_WORKSPACE_PATH, VSCODE_BUILD } from '../../spectron/application';
-import { QuickOpen } from '../quickopen/quickopen';
-import { Window } from '../window';
+import * as fs from 'fs';
+import * as path from 'path';
+import { Application } from '../../../../automation';
 
-describe('Multi Root', () => {
-	let app: SpectronApplication = new SpectronApplication(void 0, CODE_WORKSPACE_PATH);
-	if (app.build === VSCODE_BUILD.STABLE) {
-		return;
+function toUri(path: string): string {
+	if (process.platform === 'win32') {
+		return `${path.replace(/\\/g, '/')}`;
 	}
 
-	before(() => app.start('Multi Root'));
-	after(() => app.stop());
-	beforeEach(function () { app.screenCapturer.testName = this.currentTest.title; });
+	return `${path}`;
+}
 
-	it('shows results from all folders', async function () {
-		let quickOpen = new QuickOpen(app);
-		await quickOpen.openQuickOpen();
-		await app.client.type('*.*');
-		const elements = await quickOpen.getQuickOpenElements();
-		await app.screenCapturer.capture('quick open result');
-		assert.equal(elements.length, 6);
-	});
+async function createWorkspaceFile(workspacePath: string): Promise<string> {
+	const workspaceFilePath = path.join(path.dirname(workspacePath), 'smoketest.code-workspace');
+	const workspace = {
+		folders: [
+			{ path: toUri(path.join(workspacePath, 'public')) },
+			{ path: toUri(path.join(workspacePath, 'routes')) },
+			{ path: toUri(path.join(workspacePath, 'views')) }
+		]
+	};
 
-	it('shows workspace name in title', async function () {
-		const title = await new Window(app).getTitle();
-		await app.screenCapturer.capture('window title');
-		assert.ok(title.indexOf('smoketest (Workspace)') >= 0);
+	fs.writeFileSync(workspaceFilePath, JSON.stringify(workspace, null, '\t'));
+
+	return workspaceFilePath;
+}
+
+export function setup() {
+	describe('Multiroot', () => {
+
+		before(async function () {
+			const app = this.app as Application;
+
+			const workspaceFilePath = await createWorkspaceFile(app.workspacePathOrFolder);
+
+			// restart with preventing additional windows from restoring
+			// to ensure the window after restart is the multi-root workspace
+			await app.restart({ workspaceOrFolder: workspaceFilePath, extraArgs: ['--disable-restore-windows'] });
+		});
+
+		it('shows results from all folders', async function () {
+			const app = this.app as Application;
+			await app.workbench.quickopen.openQuickOpen('*.*');
+
+			await app.workbench.quickopen.waitForQuickOpenElements(names => names.length === 6);
+			await app.workbench.quickopen.closeQuickOpen();
+		});
+
+		it('shows workspace name in title', async function () {
+			const app = this.app as Application;
+			await app.code.waitForTitle(title => /smoketest \(Workspace\)/i.test(title));
+		});
 	});
-});
+}

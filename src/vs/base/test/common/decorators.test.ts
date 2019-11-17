@@ -3,17 +3,15 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-'use strict';
-
 import * as assert from 'assert';
-import { memoize } from 'vs/base/common/decorators';
+import { memoize, createMemoizer } from 'vs/base/common/decorators';
 
 suite('Decorators', () => {
 	test('memoize should memoize methods', () => {
 		class Foo {
 			count = 0;
 
-			constructor(private _answer: number) { }
+			constructor(private _answer: number | null | undefined) { }
 
 			@memoize
 			answer() {
@@ -58,7 +56,7 @@ suite('Decorators', () => {
 		class Foo {
 			count = 0;
 
-			constructor(private _answer: number) { }
+			constructor(private _answer: number | null | undefined) { }
 
 			@memoize
 			get answer() {
@@ -121,10 +119,30 @@ suite('Decorators', () => {
 		assert.equal(foo.answer, 42);
 
 		try {
-			foo['$memoize$answer'] = 1337;
+			(foo as any)['$memoize$answer'] = 1337;
 			assert(false);
 		} catch (e) {
 			assert.equal(foo.answer, 42);
 		}
+	});
+
+	test('memoize clear', () => {
+		const memoizer = createMemoizer();
+		let counter = 0;
+		class Foo {
+			@memoizer
+			get answer() { return ++counter; }
+		}
+
+		const foo = new Foo();
+		assert.equal(foo.answer, 1);
+		assert.equal(foo.answer, 1);
+		memoizer.clear();
+		assert.equal(foo.answer, 2);
+		assert.equal(foo.answer, 2);
+		memoizer.clear();
+		assert.equal(foo.answer, 3);
+		assert.equal(foo.answer, 3);
+		assert.equal(foo.answer, 3);
 	});
 });

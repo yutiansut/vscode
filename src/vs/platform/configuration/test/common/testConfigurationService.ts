@@ -3,77 +3,86 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-'use strict';
+import { TernarySearchTree } from 'vs/base/common/map';
+import { URI } from 'vs/base/common/uri';
+import { getConfigurationKeys, IConfigurationOverrides, IConfigurationService, getConfigurationValue, isConfigurationOverrides } from 'vs/platform/configuration/common/configuration';
 
-import { TrieMap } from 'vs/base/common/map';
-import URI from 'vs/base/common/uri';
-import { TPromise } from 'vs/base/common/winjs.base';
-import { EventEmitter } from 'vs/base/common/eventEmitter';
-import { getConfigurationKeys } from 'vs/platform/configuration/common/model';
-import { IConfigurationOverrides, IConfigurationService, getConfigurationValue, IConfigurationValue, IConfigurationKeys, IConfigurationValues, IConfigurationData, Configuration, ConfigurationModel } from 'vs/platform/configuration/common/configuration';
-
-export class TestConfigurationService extends EventEmitter implements IConfigurationService {
-	public _serviceBrand: any;
+export class TestConfigurationService implements IConfigurationService {
+	public _serviceBrand: undefined;
 
 	private configuration = Object.create(null);
 
-	private configurationByRoot: TrieMap<any> = new TrieMap<any>();
+	private configurationByRoot: TernarySearchTree<any> = TernarySearchTree.forPaths<any>();
 
-	public reloadConfiguration<T>(section?: string): TPromise<T> {
-		return TPromise.as(this.getConfiguration());
+	public reloadConfiguration<T>(): Promise<T> {
+		return Promise.resolve(this.getValue());
 	}
 
-	public getConfiguration(section?: string, overrides?: IConfigurationOverrides): any {
-		if (overrides && overrides.resource) {
-			const configForResource = this.configurationByRoot.findSubstr(overrides.resource.fsPath);
-			return configForResource || this.configuration;
+	public getValue(arg1?: any, arg2?: any): any {
+		let configuration;
+		const overrides = isConfigurationOverrides(arg1) ? arg1 : isConfigurationOverrides(arg2) ? arg2 : undefined;
+		if (overrides) {
+			if (overrides.resource) {
+				configuration = this.configurationByRoot.findSubstr(overrides.resource.fsPath);
+			}
 		}
-
-		return this.configuration;
+		configuration = configuration ? configuration : this.configuration;
+		if (arg1 && typeof arg1 === 'string') {
+			return getConfigurationValue(configuration, arg1);
+		}
+		return configuration;
 	}
 
-	public getConfigurationData(): IConfigurationData<any> {
-		return new Configuration(new ConfigurationModel(), new ConfigurationModel(this.configuration)).toData();
+	public updateValue(key: string, overrides?: IConfigurationOverrides): Promise<void> {
+		return Promise.resolve(undefined);
 	}
 
-	public setUserConfiguration(key: any, value: any, root?: URI): Thenable<void> {
+	public setUserConfiguration(key: any, value: any, root?: URI): Promise<void> {
 		if (root) {
-			const configForRoot = this.configurationByRoot.lookUp(root.fsPath) || Object.create(null);
+			const configForRoot = this.configurationByRoot.get(root.fsPath) || Object.create(null);
 			configForRoot[key] = value;
-			this.configurationByRoot.insert(root.fsPath, configForRoot);
+			this.configurationByRoot.set(root.fsPath, configForRoot);
 		} else {
 			this.configuration[key] = value;
 		}
 
-		return TPromise.as(null);
+		return Promise.resolve(undefined);
 	}
 
-	public onDidUpdateConfiguration() {
+	public onDidChangeConfiguration() {
 		return { dispose() { } };
 	}
 
-	public lookup<C>(key: string, overrides?: IConfigurationOverrides): IConfigurationValue<C> {
-		const config = this.getConfiguration(undefined, overrides);
+	public inspect<T>(key: string, overrides?: IConfigurationOverrides): {
+		default: T,
+		user: T,
+		userLocal?: T,
+		userRemote?: T,
+		workspace?: T,
+		workspaceFolder?: T
+		value: T,
+	} {
+		const config = this.getValue(undefined, overrides);
 
 		return {
-			value: getConfigurationValue<C>(config, key),
-			default: getConfigurationValue<C>(config, key),
-			user: getConfigurationValue<C>(config, key),
-			workspace: null,
-			folder: null
+			value: getConfigurationValue<T>(config, key),
+			default: getConfigurationValue<T>(config, key),
+			user: getConfigurationValue<T>(config, key),
+			workspace: undefined,
+			workspaceFolder: undefined
 		};
 	}
 
-	public keys(): IConfigurationKeys {
+	public keys() {
 		return {
 			default: getConfigurationKeys(),
 			user: Object.keys(this.configuration),
 			workspace: [],
-			folder: []
+			workspaceFolder: []
 		};
 	}
 
-	public values(): IConfigurationValues {
-		return {};
+	public getConfigurationData() {
+		return null;
 	}
 }

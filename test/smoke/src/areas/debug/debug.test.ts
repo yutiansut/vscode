@@ -5,121 +5,118 @@
 
 import * as assert from 'assert';
 import * as http from 'http';
-import * as os from 'os';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as stripJsonComments from 'strip-json-comments';
-import { SpectronApplication, VSCODE_BUILD, EXTENSIONS_DIR } from '../../spectron/application';
+import { Application } from '../../../../automation';
 
-describe('Debug', () => {
-	let app: SpectronApplication = new SpectronApplication();
+export function setup() {
+	describe('Debug', () => {
+		it('configure launch json', async function () {
+			const app = this.app as Application;
 
-	if (app.build === VSCODE_BUILD.DEV) {
-		const extensionsPath = path.join(os.homedir(), '.vscode-oss-dev', 'extensions');
+			await app.workbench.debug.openDebugViewlet();
+			await app.workbench.quickopen.openFile('app.js');
+			await app.workbench.debug.configure();
 
-		const debugPath = path.join(extensionsPath, 'vscode-node-debug');
-		const debugExists = fs.existsSync(debugPath);
+			const launchJsonPath = path.join(app.workspacePathOrFolder, '.vscode', 'launch.json');
+			const content = fs.readFileSync(launchJsonPath, 'utf8');
+			const config = JSON.parse(stripJsonComments(content));
+			config.configurations[0].protocol = 'inspector';
+			fs.writeFileSync(launchJsonPath, JSON.stringify(config, undefined, 4), 'utf8');
 
-		const debug2Path = path.join(extensionsPath, 'vscode-node-debug2');
-		const debug2Exists = fs.existsSync(debug2Path);
+			// force load from disk since file events are sometimes missing
+			await app.workbench.quickopen.runCommand('File: Revert File');
+			await app.workbench.editor.waitForEditorContents('launch.json', contents => /"protocol": "inspector"/.test(contents));
 
-		if (!debugExists) {
-			console.warn(`Skipping debug tests because vscode-node-debug extension was not found in ${extensionsPath}`);
-			return;
-		}
-
-		if (!debug2Exists) {
-			console.warn(`Skipping debug tests because vscode-node-debug2 extension was not found in ${extensionsPath}`);
-			return;
-		}
-
-		fs.symlinkSync(debugPath, path.join(EXTENSIONS_DIR, 'vscode-node-debug'));
-		fs.symlinkSync(debug2Path, path.join(EXTENSIONS_DIR, 'vscode-node-debug2'));
-	}
-
-	before(() => app.start('Debug'));
-	after(() => app.stop());
-	beforeEach(function () { app.screenCapturer.testName = this.currentTest.title; });
-
-	it('configure launch json', async function () {
-		await app.workbench.debug.openDebugViewlet();
-		await app.workbench.openFile('app.js');
-		await app.workbench.debug.configure();
-		const content = await app.workbench.editor.getEditorVisibleText();
-
-		// TODO@isidor: sometimes on the linux build agent,
-		// you get the contents of app.js here, so everything
-		// blows up
-		const json = JSON.parse(stripJsonComments(content));
-
-		assert.equal(json.configurations[0].request, 'launch');
-		assert.equal(json.configurations[0].type, 'node');
-		if (process.platform === 'win32') {
-			assert.equal(json.configurations[0].program, '${workspaceRoot}\\bin\\www');
-		} else {
-			assert.equal(json.configurations[0].program, '${workspaceRoot}/bin/www');
-		}
-	});
-
-	it('breakpoints', async function () {
-		await app.workbench.openFile('index.js');
-		await app.workbench.debug.setBreakpointOnLine(6);
-	});
-
-	it('start debugging', async function () {
-		await app.workbench.debug.startDebugging();
-
-		await new Promise(c => {
-			setTimeout(() => {
-				http.get(`http://localhost:3000`)
-					.on('error', e => void 0);
-				c();
-			}, 400);
+			assert.equal(config.configurations[0].request, 'launch');
+			assert.equal(config.configurations[0].type, 'node');
+			if (process.platform === 'win32') {
+				assert.equal(config.configurations[0].program, '${workspaceFolder}\\bin\\www');
+			} else {
+				assert.equal(config.configurations[0].program, '${workspaceFolder}/bin/www');
+			}
 		});
 
-		await app.workbench.debug.waitForStackFrame(sf => sf.name === 'index.js' && sf.lineNumber === 6);
-	});
+		it('breakpoints', async function () {
+			const app = this.app as Application;
 
-	it('focus stack frames and variables', async function () {
-		assert.equal(await app.workbench.debug.getLocalVariableCount(), 4);
-		await app.workbench.debug.focusStackFrame('layer.js');
-		assert.equal(await app.workbench.debug.getLocalVariableCount(), 5);
-		await app.workbench.debug.focusStackFrame('route.js');
-		assert.equal(await app.workbench.debug.getLocalVariableCount(), 3);
-		await app.workbench.debug.focusStackFrame('index.js');
-		assert.equal(await app.workbench.debug.getLocalVariableCount(), 4);
-	});
-
-	it('stepOver, stepIn, stepOut', async function () {
-		await app.workbench.debug.stepIn();
-		const first = await app.workbench.debug.waitForStackFrame(sf => sf.name === 'response.js');
-		await app.workbench.debug.stepOver();
-		await app.workbench.debug.waitForStackFrame(sf => sf.name === 'response.js' && sf.lineNumber === first.lineNumber + 1);
-		await app.workbench.debug.stepOut();
-		await app.workbench.debug.waitForStackFrame(sf => sf.name === 'index.js' && sf.lineNumber === 7);
-	});
-
-
-	it('continue', async function () {
-		await app.workbench.debug.continue();
-
-		await new Promise(c => {
-			setTimeout(() => {
-				http.get(`http://localhost:3000`)
-					.on('error', e => void 0);
-				c();
-			}, 400);
+			await app.workbench.quickopen.openFile('index.js');
+			await app.workbench.debug.setBreakpointOnLine(6);
 		});
 
-		await app.workbench.debug.waitForStackFrame(sf => sf.name === 'index.js' && sf.lineNumber === 6);
-	});
+		let port: number;
+		it('start debugging', async function () {
+			const app = this.app as Application;
 
-	it('debug console', async function () {
-		const result = await app.workbench.debug.console('2 + 2 \n', 'number');
-		assert.equal(result, '4');
-	});
+			port = await app.workbench.debug.startDebugging();
 
-	it('stop debugging', async function () {
-		await app.workbench.debug.stopDebugging();
+			await new Promise((c, e) => {
+				const request = http.get(`http://localhost:${port}`);
+				request.on('error', e);
+				app.workbench.debug.waitForStackFrame(sf => /index\.js$/.test(sf.name) && sf.lineNumber === 6, 'looking for index.js and line 6').then(c, e);
+			});
+		});
+
+		it('focus stack frames and variables', async function () {
+			const app = this.app as Application;
+
+			await app.workbench.debug.waitForVariableCount(4, 5);
+
+			await app.workbench.debug.focusStackFrame('layer.js', 'looking for layer.js');
+			await app.workbench.debug.waitForVariableCount(5, 6);
+
+			await app.workbench.debug.focusStackFrame('route.js', 'looking for route.js');
+			await app.workbench.debug.waitForVariableCount(3, 4);
+
+			await app.workbench.debug.focusStackFrame('index.js', 'looking for index.js');
+			await app.workbench.debug.waitForVariableCount(4, 5);
+		});
+
+		it('stepOver, stepIn, stepOut', async function () {
+			const app = this.app as Application;
+
+			await app.workbench.debug.stepIn();
+
+			const first = await app.workbench.debug.waitForStackFrame(sf => /response\.js$/.test(sf.name), 'looking for response.js');
+			await app.workbench.debug.stepOver();
+
+			await app.workbench.debug.waitForStackFrame(sf => /response\.js$/.test(sf.name) && sf.lineNumber === first.lineNumber + 1, `looking for response.js and line ${first.lineNumber + 1}`);
+			await app.workbench.debug.stepOut();
+
+			await app.workbench.debug.waitForStackFrame(sf => /index\.js$/.test(sf.name) && sf.lineNumber === 7, `looking for index.js and line 7`);
+		});
+
+		it('continue', async function () {
+			const app = this.app as Application;
+
+			await app.workbench.debug.continue();
+
+			await new Promise((c, e) => {
+				const request = http.get(`http://localhost:${port}`);
+				request.on('error', e);
+				app.workbench.debug.waitForStackFrame(sf => /index\.js$/.test(sf.name) && sf.lineNumber === 6, `looking for index.js and line 6`).then(c, e);
+			});
+
+		});
+
+		it('debug console', async function () {
+			const app = this.app as Application;
+
+			await app.workbench.debug.waitForReplCommand('2 + 2', r => r === '4');
+		});
+
+		it('debug console link', async function () {
+			const app = this.app as Application;
+
+			await app.workbench.debug.waitForReplCommand('"./app.js:5:1"', r => r.includes('app.js'));
+			await app.workbench.debug.waitForLink();
+		});
+
+		it('stop debugging', async function () {
+			const app = this.app as Application;
+
+			await app.workbench.debug.stopDebugging();
+		});
 	});
-});
+}

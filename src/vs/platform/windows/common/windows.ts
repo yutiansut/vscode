@@ -3,129 +3,78 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-'use strict';
+import { IProcessEnvironment, isMacintosh, isLinux, isWeb } from 'vs/base/common/platform';
+import { ParsedArgs, IEnvironmentService } from 'vs/platform/environment/common/environment';
+import { IWorkspaceIdentifier, ISingleFolderWorkspaceIdentifier } from 'vs/platform/workspaces/common/workspaces';
+import { ExportData } from 'vs/base/common/performance';
+import { LogLevel } from 'vs/platform/log/common/log';
+import { URI, UriComponents } from 'vs/base/common/uri';
+import { IConfigurationService } from 'vs/platform/configuration/common/configuration';
 
-import { TPromise } from 'vs/base/common/winjs.base';
-import { createDecorator } from 'vs/platform/instantiation/common/instantiation';
-import Event from 'vs/base/common/event';
-import { ITelemetryData } from 'vs/platform/telemetry/common/telemetry';
-import { IProcessEnvironment } from 'vs/base/common/platform';
-import { ParsedArgs } from 'vs/platform/environment/common/environment';
-import { IWorkspaceIdentifier } from 'vs/platform/workspaces/common/workspaces';
-import { IRecentlyOpened } from 'vs/platform/history/common/history';
+export interface IOpenedWindow {
+	id: number;
+	workspace?: IWorkspaceIdentifier;
+	folderUri?: ISingleFolderWorkspaceIdentifier;
+	title: string;
+	filename?: string;
+}
 
-export const IWindowsService = createDecorator<IWindowsService>('windowsService');
+export interface IBaseOpenWindowsOptions {
+	forceReuseWindow?: boolean;
+}
 
-export interface INativeOpenDialogOptions {
-	windowId?: number;
+export interface IOpenWindowOptions extends IBaseOpenWindowsOptions {
 	forceNewWindow?: boolean;
 
-	dialogOptions?: Electron.OpenDialogOptions;
-
-	telemetryEventName?: string;
-	telemetryExtraData?: ITelemetryData;
+	noRecentEntry?: boolean;
 }
 
-export interface IWindowsService {
-
-	_serviceBrand: any;
-
-	onWindowOpen: Event<number>;
-	onWindowFocus: Event<number>;
-	onWindowBlur: Event<number>;
-
-	pickFileFolderAndOpen(options: INativeOpenDialogOptions): TPromise<void>;
-	pickFileAndOpen(options: INativeOpenDialogOptions): TPromise<void>;
-	pickFolderAndOpen(options: INativeOpenDialogOptions): TPromise<void>;
-	reloadWindow(windowId: number): TPromise<void>;
-	openDevTools(windowId: number): TPromise<void>;
-	toggleDevTools(windowId: number): TPromise<void>;
-	closeWorkspace(windowId: number): TPromise<void>;
-	openWorkspace(windowId: number): TPromise<void>;
-	createAndOpenWorkspace(windowId: number, folders?: string[], path?: string): TPromise<void>;
-	saveAndOpenWorkspace(windowId: number, path: string): TPromise<void>;
-	toggleFullScreen(windowId: number): TPromise<void>;
-	setRepresentedFilename(windowId: number, fileName: string): TPromise<void>;
-	addRecentlyOpened(files: string[]): TPromise<void>;
-	removeFromRecentlyOpened(paths: string[]): TPromise<void>;
-	clearRecentlyOpened(): TPromise<void>;
-	getRecentlyOpened(windowId: number): TPromise<IRecentlyOpened>;
-	focusWindow(windowId: number): TPromise<void>;
-	closeWindow(windowId: number): TPromise<void>;
-	isFocused(windowId: number): TPromise<boolean>;
-	isMaximized(windowId: number): TPromise<boolean>;
-	maximizeWindow(windowId: number): TPromise<void>;
-	unmaximizeWindow(windowId: number): TPromise<void>;
-	onWindowTitleDoubleClick(windowId: number): TPromise<void>;
-	setDocumentEdited(windowId: number, flag: boolean): TPromise<void>;
-	quit(): TPromise<void>;
-	relaunch(options: { addArgs?: string[], removeArgs?: string[] }): TPromise<void>;
-
-	// macOS Native Tabs
-	showPreviousWindowTab(): TPromise<void>;
-	showNextWindowTab(): TPromise<void>;
-	moveWindowTabToNewWindow(): TPromise<void>;
-	mergeAllWindowTabs(): TPromise<void>;
-	toggleWindowTabsBar(): TPromise<void>;
-
-	// Shared process
-	whenSharedProcessReady(): TPromise<void>;
-	toggleSharedProcess(): TPromise<void>;
-
-	// Global methods
-	openWindow(paths: string[], options?: { forceNewWindow?: boolean, forceReuseWindow?: boolean, forceOpenWorkspaceAsFile?: boolean; }): TPromise<void>;
-	openNewWindow(): TPromise<void>;
-	showWindow(windowId: number): TPromise<void>;
-	getWindows(): TPromise<{ id: number; workspace?: IWorkspaceIdentifier; folderPath?: string; title: string; filename?: string; }[]>;
-	getWindowCount(): TPromise<number>;
-	log(severity: string, ...messages: string[]): TPromise<void>;
-	showItemInFolder(path: string): TPromise<void>;
-
-	// This needs to be handled from browser process to prevent
-	// foreground ordering issues on Windows
-	openExternal(url: string): TPromise<boolean>;
-
-	// TODO: this is a bit backwards
-	startCrashReporter(config: Electron.CrashReporterStartOptions): TPromise<void>;
+export interface IOpenEmptyWindowOptions extends IBaseOpenWindowsOptions {
+	remoteAuthority?: string;
 }
 
-export const IWindowService = createDecorator<IWindowService>('windowService');
+export type IWindowOpenable = IWorkspaceToOpen | IFolderToOpen | IFileToOpen;
 
-export interface IWindowService {
-
-	_serviceBrand: any;
-
-	onDidChangeFocus: Event<boolean>;
-
-	getCurrentWindowId(): number;
-	pickFileFolderAndOpen(options: INativeOpenDialogOptions): TPromise<void>;
-	pickFileAndOpen(options: INativeOpenDialogOptions): TPromise<void>;
-	pickFolderAndOpen(options: INativeOpenDialogOptions): TPromise<void>;
-	reloadWindow(): TPromise<void>;
-	openDevTools(): TPromise<void>;
-	toggleDevTools(): TPromise<void>;
-	closeWorkspace(): TPromise<void>;
-	openWorkspace(): TPromise<void>;
-	createAndOpenWorkspace(folders?: string[], path?: string): TPromise<void>;
-	saveAndOpenWorkspace(path: string): TPromise<void>;
-	toggleFullScreen(): TPromise<void>;
-	setRepresentedFilename(fileName: string): TPromise<void>;
-	getRecentlyOpened(): TPromise<IRecentlyOpened>;
-	focusWindow(): TPromise<void>;
-	closeWindow(): TPromise<void>;
-	isFocused(): TPromise<boolean>;
-	setDocumentEdited(flag: boolean): TPromise<void>;
-	isMaximized(): TPromise<boolean>;
-	maximizeWindow(): TPromise<void>;
-	unmaximizeWindow(): TPromise<void>;
-	onWindowTitleDoubleClick(): TPromise<void>;
-	show(): TPromise<void>;
-	showMessageBox(options: Electron.MessageBoxOptions): number;
-	showSaveDialog(options: Electron.SaveDialogOptions, callback?: (fileName: string) => void): string;
-	showOpenDialog(options: Electron.OpenDialogOptions, callback?: (fileNames: string[]) => void): string[];
+export interface IBaseWindowOpenable {
+	label?: string;
 }
 
-export type MenuBarVisibility = 'default' | 'visible' | 'toggle' | 'hidden';
+export interface IWorkspaceToOpen extends IBaseWindowOpenable {
+	workspaceUri: URI;
+}
+
+export interface IFolderToOpen extends IBaseWindowOpenable {
+	folderUri: URI;
+}
+
+export interface IFileToOpen extends IBaseWindowOpenable {
+	fileUri: URI;
+}
+
+export function isWorkspaceToOpen(uriToOpen: IWindowOpenable): uriToOpen is IWorkspaceToOpen {
+	return !!(uriToOpen as IWorkspaceToOpen).workspaceUri;
+}
+
+export function isFolderToOpen(uriToOpen: IWindowOpenable): uriToOpen is IFolderToOpen {
+	return !!(uriToOpen as IFolderToOpen).folderUri;
+}
+
+export function isFileToOpen(uriToOpen: IWindowOpenable): uriToOpen is IFileToOpen {
+	return !!(uriToOpen as IFileToOpen).fileUri;
+}
+
+export type MenuBarVisibility = 'default' | 'visible' | 'toggle' | 'hidden' | 'compact';
+
+export function getMenuBarVisibility(configurationService: IConfigurationService, environment: IEnvironmentService, isExtensionDevelopment = environment.isExtensionDevelopment): MenuBarVisibility {
+	const titleBarStyle = getTitleBarStyle(configurationService, environment, isExtensionDevelopment);
+	const menuBarVisibility = configurationService.getValue<MenuBarVisibility>('window.menuBarVisibility');
+
+	if (titleBarStyle === 'native' && menuBarVisibility === 'compact') {
+		return 'default';
+	} else {
+		return menuBarVisibility;
+	}
+}
 
 export interface IWindowsConfiguration {
 	window: IWindowSettings;
@@ -134,8 +83,8 @@ export interface IWindowsConfiguration {
 export interface IWindowSettings {
 	openFilesInNewWindow: 'on' | 'off' | 'default';
 	openFoldersInNewWindow: 'on' | 'off' | 'default';
+	openWithoutArgumentsInNewWindow: 'on' | 'off';
 	restoreWindows: 'all' | 'folders' | 'one' | 'none';
-	reopenFolders: 'all' | 'one' | 'none'; // TODO@Ben deprecated
 	restoreFullscreen: boolean;
 	zoomLevel: number;
 	titleBarStyle: 'native' | 'custom';
@@ -143,11 +92,45 @@ export interface IWindowSettings {
 	menuBarVisibility: MenuBarVisibility;
 	newWindowDimensions: 'default' | 'inherit' | 'maximized' | 'fullscreen';
 	nativeTabs: boolean;
+	nativeFullScreen: boolean;
 	enableMenuBarMnemonics: boolean;
 	closeWhenEmpty: boolean;
+	clickThroughInactive: boolean;
 }
 
-export enum OpenContext {
+export function getTitleBarStyle(configurationService: IConfigurationService, environment: IEnvironmentService, isExtensionDevelopment = environment.isExtensionDevelopment): 'native' | 'custom' {
+	if (isWeb) {
+		return 'custom';
+	}
+
+	const configuration = configurationService.getValue<IWindowSettings>('window');
+
+	const isDev = !environment.isBuilt || isExtensionDevelopment;
+	if (isMacintosh && isDev) {
+		return 'native'; // not enabled when developing due to https://github.com/electron/electron/issues/3647
+	}
+
+	if (configuration) {
+		const useNativeTabs = isMacintosh && configuration.nativeTabs === true;
+		if (useNativeTabs) {
+			return 'native'; // native tabs on sierra do not work with custom title style
+		}
+
+		const useSimpleFullScreen = isMacintosh && configuration.nativeFullScreen === false;
+		if (useSimpleFullScreen) {
+			return 'native'; // simple fullscreen does not work well with custom title style (https://github.com/Microsoft/vscode/issues/63291)
+		}
+
+		const style = configuration.titleBarStyle;
+		if (style === 'native' || style === 'custom') {
+			return style;
+		}
+	}
+
+	return isLinux ? 'native' : 'custom'; // default to custom on all macOS and Windows
+}
+
+export const enum OpenContext {
 
 	// opening when running from the command line
 	CLI,
@@ -168,7 +151,7 @@ export enum OpenContext {
 	API
 }
 
-export enum ReadyState {
+export const enum ReadyState {
 
 	/**
 	 * This window has not loaded any HTML yet
@@ -191,50 +174,94 @@ export enum ReadyState {
 	READY
 }
 
-export interface IPath {
+export interface IPath extends IPathData {
 
-	// the file path to open within a Code instance
-	filePath?: string;
+	// the file path to open within the instance
+	fileUri?: URI;
+}
+
+export interface IPathsToWaitFor extends IPathsToWaitForData {
+	paths: IPath[];
+	waitMarkerFileUri: URI;
+}
+
+export interface IPathsToWaitForData {
+	paths: IPathData[];
+	waitMarkerFileUri: UriComponents;
+}
+
+export interface IPathData {
+
+	// the file path to open within the instance
+	fileUri?: UriComponents;
 
 	// the line number in the file path to open
 	lineNumber?: number;
 
 	// the column number in the file path to open
 	columnNumber?: number;
+
+	// a hint that the file exists. if true, the
+	// file exists, if false it does not. with
+	// undefined the state is unknown.
+	exists?: boolean;
 }
 
 export interface IOpenFileRequest {
-	filesToOpen?: IPath[];
-	filesToCreate?: IPath[];
-	filesToDiff?: IPath[];
+	filesToOpenOrCreate?: IPathData[];
+	filesToDiff?: IPathData[];
+	filesToWait?: IPathsToWaitForData;
+	termProgram?: string;
 }
 
 export interface IAddFoldersRequest {
-	foldersToAdd: IPath[];
+	foldersToAdd: UriComponents[];
 }
 
-export interface IWindowConfiguration extends ParsedArgs, IOpenFileRequest {
+export interface IWindowConfiguration extends ParsedArgs {
+	machineId?: string; // NOTE: This is undefined in the web, the telemetry service directly resolves this.
+	windowId: number; // TODO: should we deprecate this in favor of sessionId?
+	sessionId: string;
+	logLevel: LogLevel;
+
+	mainPid: number;
+
 	appRoot: string;
 	execPath: string;
 	isInitialStartup?: boolean;
 
 	userEnv: IProcessEnvironment;
-	nodeCachedDataDir: string;
+	nodeCachedDataDir?: string;
 
 	backupPath?: string;
+	backupWorkspaceResource?: URI;
 
 	workspace?: IWorkspaceIdentifier;
-	folderPath?: string;
+	folderUri?: ISingleFolderWorkspaceIdentifier;
 
-	isISOKeyboard?: boolean;
+	remoteAuthority?: string;
+	connectionToken?: string;
+
 	zoomLevel?: number;
 	fullscreen?: boolean;
+	maximized?: boolean;
 	highContrast?: boolean;
-	baseTheme?: string;
-	backgroundColor?: string;
 	accessibilitySupport?: boolean;
+	partsSplashPath?: string;
 
-	perfStartTime?: number;
-	perfAppReady?: number;
-	perfWindowLoadTime?: number;
+	perfEntries: ExportData;
+
+	filesToOpenOrCreate?: IPath[];
+	filesToDiff?: IPath[];
+	filesToWait?: IPathsToWaitFor;
+}
+
+export interface IRunActionInWindowRequest {
+	id: string;
+	from: 'menu' | 'touchbar' | 'mouse';
+	args?: any[];
+}
+
+export interface IRunKeybindingInWindowRequest {
+	userSettingsLabel: string;
 }
